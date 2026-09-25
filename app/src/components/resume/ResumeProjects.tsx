@@ -1,5 +1,5 @@
 import type { Project } from '../../types/resume'
-import { toHttpUrl } from '../../utils/resumeHelpers'
+import { formatUrlLabel, toHttpUrl } from '../../utils/resumeHelpers'
 import { ResumeSection } from './ResumeSection'
 
 interface ResumeProjectsProps {
@@ -19,6 +19,7 @@ export const ResumeProjects = ({ projects }: ResumeProjectsProps) => {
       <div className="resume-entries">
         {items.map((project, index) => {
           const link = toHttpUrl(project.link)
+          const linkLabel = formatUrlLabel(project.link)
           const technologies = project.technologies.filter((technology) => technology.trim())
           return (
             <article className="resume-entry resume-entry--project" key={project.id}>
@@ -27,7 +28,7 @@ export const ResumeProjects = ({ projects }: ResumeProjectsProps) => {
                 {project.name ? (
                   <h3>
                     {project.name}
-                    {link ? <a className="resume-entry__link" href={link} target="_blank" rel="noreferrer">View project</a> : null}
+                    {link ? <a className="resume-entry__link" href={link} target="_blank" rel="noreferrer" aria-label={project.link}>{linkLabel}</a> : null}
                   </h3>
                 ) : null}
                 {project.description ? <p className="resume-entry__description">{project.description}</p> : null}
