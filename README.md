@@ -5,29 +5,33 @@ A polished, local-first React resume builder with an original monochrome A4 temp
 ## Run locally
 
 ```bash
+cd app
 npm install
 npm run dev
 ```
 
-Create a production build with:
+## Build for GitHub Pages
+
+The React/Vite source is kept in `app/`. The repository root is reserved for the static files served by GitHub Pages.
+
+On Windows, double-click `build-github-pages.bat`. It installs dependencies in `app/node_modules` when needed, builds the app, and synchronizes the generated `index.html`, `assets/`, and `.nojekyll` files into the repository root. Commit those generated root files together with your `app/` changes before pushing.
+
+To build only the Vite project without synchronizing the Pages files:
 
 ```bash
+cd app
 npm run build
 ```
 
 ## Deploy to GitHub Pages
 
-The repository includes a GitHub Actions workflow at `.github/workflows/deploy-pages.yml`. It builds the Vite app and deploys the generated `dist/` artifact whenever a commit reaches `main`; it can also be run manually from the **Actions** tab.
-
-On Windows, double-click `build-github-pages.bat` to create the same production-ready `dist/` folder locally. It installs dependencies automatically when `node_modules` is missing, then runs the production build.
-
-This setup is compatible with the free GitHub Pages tier. On GitHub Free, keep the repository **public** before publishing. Before the first deployment, push this repository to GitHub and open **Settings → Pages**. Under **Build and deployment**, set **Source** to **GitHub Actions**. GitHub will publish the project site at:
+This setup targets the free GitHub Pages branch publisher. On GitHub Free, keep the repository **public** before publishing. Before the first deployment, push this repository to GitHub and open **Settings → Pages**. Under **Build and deployment**, set **Source** to **Deploy from a branch**, choose branch **main**, and select the **/(root)** folder. GitHub will publish the project site at:
 
 ```text
 https://<github-owner>.github.io/<repository-name>/
 ```
 
-Vite is configured with a relative public base (`./`), so built JavaScript, CSS, and other assets load correctly from a repository subpath as well as from a custom domain. No paid service, `gh-pages` branch, or committed build output is required.
+Vite is configured with a relative public base (`./`), so built JavaScript, CSS, and other assets load correctly from a repository subpath as well as from a custom domain. No paid service, workflow, or `gh-pages` branch is required.
 
 ## PDF output
 
