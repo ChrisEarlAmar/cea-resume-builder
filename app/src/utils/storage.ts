@@ -1,5 +1,5 @@
 import type { ResumeData } from '../types/resume'
-import { isResumeData } from './resumeValidation'
+import { toResumeData } from './resumeValidation'
 
 const STORAGE_KEY = 'resume-studio-document-v1'
 
@@ -18,8 +18,7 @@ export const readResume = (): ResumeData | null => {
     if (!rawValue) return null
 
     const parsed: unknown = JSON.parse(rawValue)
-    if (!isResumeData(parsed)) return null
-    return parsed
+    return toResumeData(parsed)
   } catch {
     return null
   }

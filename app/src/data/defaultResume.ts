@@ -64,7 +64,7 @@ export const defaultResumeData: ResumeData = {
       description:
         'Built a Windows utility, compiled as an executable, to manage and run batch scripts for PHP Artisan commands, queues, and WebSocket servers.',
       technologies: ['Python', 'PHP Artisan', 'WebSockets'],
-      url: '',
+      link: '',
     },
     {
       id: 'project-mvp-survey-tool',
@@ -72,7 +72,7 @@ export const defaultResumeData: ResumeData = {
       description:
         'Built an MVP survey platform for branch and store data collection and monitoring, with real-time WebSocket updates and a modern user interface.',
       technologies: ['Laravel', 'React', 'WebSockets', 'Material UI'],
-      url: '',
+      link: '',
     },
   ],
   certifications: [],

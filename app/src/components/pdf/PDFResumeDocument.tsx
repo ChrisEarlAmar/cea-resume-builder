@@ -325,7 +325,7 @@ const PDFProjects = ({ items }: { items: Project[] }) => {
     <PDFSection label="Selected work">
       <View style={styles.entries}>
         {projects.map((project, index) => {
-          const url = toHttpUrl(project.url)
+          const link = toHttpUrl(project.link)
           const technologies = project.technologies.filter((technology) => technology.trim())
           return (
             <View
@@ -338,7 +338,7 @@ const PDFProjects = ({ items }: { items: Project[] }) => {
                 {project.name ? (
                   <View style={styles.entryTitleRow}>
                     <Text style={styles.entryTitle}>{project.name}</Text>
-                    {url ? <Link src={url} style={styles.inlineLink}>View project</Link> : null}
+                    {link ? <Link src={link} style={styles.inlineLink}>View project</Link> : null}
                   </View>
                 ) : null}
                 {project.description ? <Text style={styles.description}>{project.description}</Text> : null}

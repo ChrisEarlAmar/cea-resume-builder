@@ -16,7 +16,7 @@ const newProject = (): Project => ({
   name: '',
   description: '',
   technologies: [],
-  url: '',
+  link: '',
 })
 
 export const ProjectsEditor = ({ projects, onChange }: ProjectsEditorProps) => {
@@ -40,7 +40,7 @@ export const ProjectsEditor = ({ projects, onChange }: ProjectsEditorProps) => {
             </div>
             <div className="form-grid form-grid--two">
               <Field label="Project name" value={item.name} placeholder="Project name" onChange={(event) => updateProject(item.id, { name: event.target.value })} />
-              <Field label="Project URL" value={item.url} placeholder="project.example.com" onChange={(event) => updateProject(item.id, { url: event.target.value })} />
+              <Field label="Project link" value={item.link} placeholder="project.example.com" onChange={(event) => updateProject(item.id, { link: event.target.value })} />
             </div>
             <Textarea label="Description" value={item.description} rows={3} placeholder="What it is, why it matters, and what you contributed." onChange={(event) => updateProject(item.id, { description: event.target.value })} />
             <Field

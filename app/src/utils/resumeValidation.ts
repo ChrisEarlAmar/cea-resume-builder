@@ -50,7 +50,7 @@ const isSkillGroup = (value: unknown): value is SkillGroup =>
 
 const isProject = (value: unknown): value is Project =>
   isRecord(value) &&
-  hasStringFields(value, ['id', 'name', 'description', 'url']) &&
+  hasStringFields(value, ['id', 'name', 'description', 'link']) &&
   isStringArray(value.technologies)
 
 const isCertification = (value: unknown): value is Certification =>
@@ -67,18 +67,39 @@ export const isResumeData = (value: unknown): value is ResumeData =>
   Array.isArray(value.projects) && value.projects.every(isProject) &&
   Array.isArray(value.certifications) && value.certifications.every(isCertification)
 
+/** Maps the earlier `url` project field to the public `link` attribute. */
+export const toResumeData = (value: unknown): ResumeData | null => {
+  if (isResumeData(value)) return value
+  if (!isRecord(value) || !Array.isArray(value.projects)) return null
+
+  const migratedProjects = value.projects.map((project) => {
+    if (!isRecord(project)) return project
+    const { url, ...projectWithoutLegacyUrl } = project
+    const link = typeof project.link === 'string'
+      ? project.link
+      : typeof url === 'string'
+        ? url
+        : ''
+    return { ...projectWithoutLegacyUrl, link }
+  })
+
+  const migrated = { ...value, projects: migratedProjects }
+  return isResumeData(migrated) ? migrated : null
+}
+
 export const serializeResumeData = (data: ResumeData): string => JSON.stringify(data, null, 2)
 
 export const parseResumeDataJson = (source: string): JsonParseResult => {
   try {
     const value: unknown = JSON.parse(source)
-    if (!isResumeData(value)) {
+    const resume = toResumeData(value)
+    if (!resume) {
       return {
         ok: false,
         message: 'The JSON is valid syntax, but it does not match the resume data structure.',
       }
     }
-    return { ok: true, data: value }
+    return { ok: true, data: resume }
   } catch (error) {
     const reason = error instanceof Error ? error.message : 'Unknown JSON parsing error.'
     return { ok: false, message: reason }
