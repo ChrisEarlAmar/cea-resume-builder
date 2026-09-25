@@ -1,5 +1,8 @@
 import { FileDown, LoaderCircle, RotateCcw, Sparkles } from 'lucide-react'
 import { useState } from 'react'
+import { EditorModeSwitch } from './components/editor/EditorModeSwitch'
+import type { EditorMode } from './components/editor/EditorModeSwitch'
+import { JsonResumeEditor } from './components/editor/JsonResumeEditor'
 import { ResumeEditor } from './components/editor/ResumeEditor'
 import { ResumeTemplate } from './components/resume/ResumeTemplate'
 import { Button } from './components/ui/Button'
@@ -11,6 +14,7 @@ const App = () => {
   const [isResetModalOpen, setIsResetModalOpen] = useState(false)
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false)
   const [pdfError, setPdfError] = useState<string | null>(null)
+  const [editorMode, setEditorMode] = useState<EditorMode>('form')
 
   const handleDownload = async () => {
     if (isGeneratingPdf) return
@@ -60,8 +64,14 @@ const App = () => {
               <p className="eyebrow"><Sparkles size={13} aria-hidden="true" /> Live editor</p>
               <h1>Make it unmistakably yours.</h1>
               <p>Every change is saved locally and appears in the A4 preview immediately.</p>
+              <EditorModeSwitch mode={editorMode} onChange={setEditorMode} />
             </div>
-            <ResumeEditor data={data} onChange={updateData} />
+            <div hidden={editorMode !== 'form'}>
+              <ResumeEditor data={data} onChange={updateData} />
+            </div>
+            <div hidden={editorMode !== 'json'}>
+              <JsonResumeEditor data={data} onChange={updateData} />
+            </div>
           </aside>
 
           <section className="preview-pane" aria-label="Live resume preview">

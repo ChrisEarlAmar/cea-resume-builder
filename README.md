@@ -37,6 +37,10 @@ Vite is configured with a relative public base (`./`), so built JavaScript, CSS,
 
 Use **Download PDF** to create the file directly. The export uses a dedicated PDF document renderer rather than canvas or screenshot tooling, so exported resumes preserve selectable/searchable text and vector layout while flowing naturally across multiple A4 pages.
 
+## Editing modes
+
+Use the **Form / JSON** switch at the top of the editor to choose between guided fields and a complete `resume.json` workspace. Valid JSON edits update the preview and saved resume data immediately. Invalid JSON remains only in the editor draft until it is corrected or reverted, so it cannot corrupt the resume preview.
+
 ## Architecture
 
 - `src/types/` contains the template-independent resume data model.
