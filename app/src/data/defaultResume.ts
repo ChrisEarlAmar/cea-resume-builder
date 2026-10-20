@@ -9,7 +9,7 @@ export const defaultResumeData: ResumeData = {
     location: 'Davao City, Philippines',
     linkedin: 'linkedin.com/in/chris-earl-amar-945a7a226',
     github: 'github.com/ChrisEarlAmar',
-    website: '',
+    website: 'https://chrisearlamar.github.io/ChrisEarlAmar/',
   },
   summary:
     'Full-stack web developer building back-office applications with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
