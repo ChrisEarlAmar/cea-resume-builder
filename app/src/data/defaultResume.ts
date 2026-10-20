@@ -12,7 +12,7 @@ export const defaultResumeData: ResumeData = {
     website: '',
   },
   summary:
-    'Full-stack web developer experienced in building and maintaining back-office applications with Laravel, React, TypeScript, SQL, and Oracle ERP data. Experience includes REST APIs, audit and compliance reporting, and multi-store survey tools with real-time updates, access controls, filtering, and PDF export.',
+    'Full-stack web developer building back-office applications with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
   experience: [
     {
       id: 'experience-decoarts-citihardware',
@@ -23,9 +23,9 @@ export const defaultResumeData: ResumeData = {
       endDate: '',
       current: true,
       highlights: [
-        'Developed back-office applications, including accounting exception report generators, using optimized SQL queries on Oracle ERP data to support auditing and compliance.',
-        'Built and integrated RESTful APIs for Laravel and React applications.',
-        'Maintained and enhanced a customer-data collection survey tool used by 120+ stores, adding PDF export, real-time updates, access controls, and advanced filtering.',
+        'Built accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.',
+        'Built and integrated REST APIs for Laravel and React applications.',
+        'Maintained a customer-data survey tool used by 120+ stores, adding PDF export, real-time updates, access controls, and advanced filtering.',
       ],
     },
   ],
@@ -62,7 +62,7 @@ export const defaultResumeData: ResumeData = {
       id: 'project-batch-manager',
       name: 'Batch Manager',
       description:
-        'Built a Windows utility, compiled as an executable, to manage and run batch scripts for PHP Artisan commands, queues, and WebSocket servers.',
+        'Windows utility, packaged as an executable, for running and managing batch scripts for PHP Artisan commands, queues, and WebSocket servers.',
       technologies: ['Python', 'PHP Artisan', 'WebSockets'],
       link: '',
     },
@@ -70,7 +70,7 @@ export const defaultResumeData: ResumeData = {
       id: 'project-mvp-survey-tool',
       name: 'MVP Survey Tool',
       description:
-        'Built an MVP survey platform for branch and store data collection and monitoring, with real-time WebSocket updates and a modern user interface.',
+        'MVP survey platform for branch and store data collection, with WebSocket updates for real-time monitoring.',
       technologies: ['Laravel', 'React', 'WebSockets', 'Material UI'],
       link: '',
     },
