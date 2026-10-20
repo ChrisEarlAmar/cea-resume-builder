@@ -44,7 +44,7 @@ export const defaultResumeData: ResumeData = {
     {
       id: 'skills-languages',
       name: 'Languages',
-      skills: ['TypeScript', 'JavaScript', 'PHP', 'SQL', 'HTML/CSS'],
+      skills: ['TypeScript', 'JavaScript', 'PHP', 'Python', 'SQL', 'HTML/CSS'],
     },
     {
       id: 'skills-frameworks-ui',
@@ -54,7 +54,7 @@ export const defaultResumeData: ResumeData = {
     {
       id: 'skills-data-tools',
       name: 'Data & Tools',
-      skills: ['MySQL', 'Oracle SQL Developer', 'GitLab'],
+      skills: ['MySQL', 'Oracle SQL Developer', 'GitLab', 'Docker (Beginner)'],
     },
   ],
   projects: [
