@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { cloneDefaultResume } from '../data/defaultResume'
+import { cloneDefaultResume, defaultResumeData } from '../data/defaultResume'
 import { isLegacyFictionalStarter, readResume, saveResume } from '../utils/storage'
 import type { ResumeData } from '../types/resume'
 
@@ -9,11 +9,28 @@ export interface ResumeActions {
   reset: () => void
 }
 
+const addPersonalWebsiteToSavedResume = (resume: ResumeData): ResumeData => {
+  if (
+    resume.personal.email !== defaultResumeData.personal.email ||
+    resume.personal.website.trim()
+  ) {
+    return resume
+  }
+
+  return {
+    ...resume,
+    personal: {
+      ...resume.personal,
+      website: defaultResumeData.personal.website,
+    },
+  }
+}
+
 export const useResume = (): ResumeActions => {
   const [data, setData] = useState<ResumeData>(() => {
     const savedResume = readResume()
     return savedResume && !isLegacyFictionalStarter(savedResume)
-      ? savedResume
+      ? addPersonalWebsiteToSavedResume(savedResume)
       : cloneDefaultResume()
   })
 
