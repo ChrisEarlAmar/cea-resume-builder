@@ -15,7 +15,7 @@ export const ResumeProjects = ({ projects }: ResumeProjectsProps) => {
   if (items.length === 0) return null
 
   return (
-    <ResumeSection label="Selected work">
+    <ResumeSection label="Projects">
       <div className="resume-entries">
         {items.map((project, index) => {
           const link = toHttpUrl(project.link)

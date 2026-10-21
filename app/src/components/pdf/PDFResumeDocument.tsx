@@ -305,7 +305,7 @@ const PDFSkills = ({ items }: { items: SkillGroup[] }) => {
     .filter((group) => group.skills.length > 0)
   if (groups.length === 0) return null
   return (
-    <PDFSection label="Capabilities">
+    <PDFSection label="Skills">
       <View style={styles.skills}>
         {groups.map((group) => (
           <View key={group.id} style={styles.skillGroup} wrap={false}>
@@ -322,7 +322,7 @@ const PDFProjects = ({ items }: { items: Project[] }) => {
   const projects = items.filter(hasProjectContent)
   if (projects.length === 0) return null
   return (
-    <PDFSection label="Selected work">
+    <PDFSection label="Projects">
       <View style={styles.entries}>
         {projects.map((project, index) => {
           const link = toHttpUrl(project.link)

@@ -3,7 +3,7 @@ import type { ResumeData } from '../types/resume'
 export const defaultResumeData: ResumeData = {
   personal: {
     name: 'Chris Earl Amar',
-    title: 'Full-Stack Web Developer',
+    title: 'Systems Developer',
     email: 'chrisearlamar@gmail.com',
     phone: '0977 049 4633',
     location: 'Davao City, Philippines',
@@ -12,12 +12,12 @@ export const defaultResumeData: ResumeData = {
     website: 'https://chrisearlamar.github.io/ChrisEarlAmar/',
   },
   summary:
-    'Full-stack web developer building back-office applications for CitiHardware with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
+    'Systems developer building back-office applications for CitiHardware with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
   experience: [
     {
       id: 'experience-decoarts-citihardware',
       company: 'DecoArts Marketing, Inc.',
-      position: 'Full-Stack Web Developer',
+      position: 'Systems Developer',
       location: '',
       startDate: 'Feb 2024',
       endDate: '',
@@ -26,6 +26,7 @@ export const defaultResumeData: ResumeData = {
         'Built back-office applications for CitiHardware, including accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.',
         'Built and integrated REST APIs for Laravel and React applications.',
         'Maintained a customer-data survey tool used by 120+ stores, adding PDF export, real-time updates, access controls, and advanced filtering.',
+        'Built a point-of-sale customer display system showing transaction line items, campaign videos, and static banners.',
       ],
     },
   ],

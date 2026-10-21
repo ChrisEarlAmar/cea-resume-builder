@@ -12,7 +12,7 @@ export const ResumeSkills = ({ skillGroups }: ResumeSkillsProps) => {
   if (groups.length === 0) return null
 
   return (
-    <ResumeSection label="Capabilities">
+    <ResumeSection label="Skills">
       <div className="resume-skills">
         {groups.map((group) => (
           <div className="resume-skills__group" key={group.id}>

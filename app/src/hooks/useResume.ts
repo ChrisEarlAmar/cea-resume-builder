@@ -10,10 +10,15 @@ export interface ResumeActions {
 }
 
 const LEGACY_EMPLOYER_NAME = 'DecoArts Marketing, Inc. / CitiHardware Inc.'
+const LEGACY_ROLE_TITLE = 'Full-Stack Web Developer'
 const LEGACY_PROFILE_SUMMARY =
   'Full-stack web developer building back-office applications with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.'
+const LEGACY_CITIHARDWARE_PROFILE_SUMMARY =
+  'Full-stack web developer building back-office applications for CitiHardware with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.'
 const LEGACY_ACCOUNTING_HIGHLIGHT =
   'Built accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.'
+const POINT_OF_SALE_HIGHLIGHT =
+  'Built a point-of-sale customer display system showing transaction line items, campaign videos, and static banners.'
 
 const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
   if (resume.personal.email !== defaultResumeData.personal.email) {
@@ -24,17 +29,22 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
     const defaultExperience = defaultResumeData.experience.find(({ id }) => id === item.id)
     if (!defaultExperience) return item
 
+    const highlights = item.highlights.map((highlight) =>
+      highlight === LEGACY_ACCOUNTING_HIGHLIGHT
+        ? defaultExperience.highlights[0]
+        : highlight,
+    )
+
     return {
       ...item,
       company: item.company === LEGACY_EMPLOYER_NAME ? defaultExperience.company : item.company,
-      highlights: item.highlights.map((highlight) =>
-        highlight === LEGACY_ACCOUNTING_HIGHLIGHT
-          ? defaultExperience.highlights[0]
-          : highlight,
-      ),
+      position: item.position === LEGACY_ROLE_TITLE ? defaultExperience.position : item.position,
+      highlights: highlights.includes(POINT_OF_SALE_HIGHLIGHT)
+        ? highlights
+        : [...highlights, POINT_OF_SALE_HIGHLIGHT],
     }
   })
-  const summary = resume.summary === LEGACY_PROFILE_SUMMARY
+  const summary = [LEGACY_PROFILE_SUMMARY, LEGACY_CITIHARDWARE_PROFILE_SUMMARY].includes(resume.summary)
     ? defaultResumeData.summary
     : resume.summary
 
@@ -70,6 +80,9 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
     summary,
     personal: {
       ...resume.personal,
+      title: resume.personal.title === LEGACY_ROLE_TITLE
+        ? defaultResumeData.personal.title
+        : resume.personal.title,
       website: resume.personal.website.trim() || defaultResumeData.personal.website,
     },
     experience,
