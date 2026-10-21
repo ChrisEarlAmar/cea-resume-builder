@@ -9,10 +9,34 @@ export interface ResumeActions {
   reset: () => void
 }
 
+const LEGACY_EMPLOYER_NAME = 'DecoArts Marketing, Inc. / CitiHardware Inc.'
+const LEGACY_PROFILE_SUMMARY =
+  'Full-stack web developer building back-office applications with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.'
+const LEGACY_ACCOUNTING_HIGHLIGHT =
+  'Built accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.'
+
 const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
   if (resume.personal.email !== defaultResumeData.personal.email) {
     return resume
   }
+
+  const experience = resume.experience.map((item) => {
+    const defaultExperience = defaultResumeData.experience.find(({ id }) => id === item.id)
+    if (!defaultExperience) return item
+
+    return {
+      ...item,
+      company: item.company === LEGACY_EMPLOYER_NAME ? defaultExperience.company : item.company,
+      highlights: item.highlights.map((highlight) =>
+        highlight === LEGACY_ACCOUNTING_HIGHLIGHT
+          ? defaultExperience.highlights[0]
+          : highlight,
+      ),
+    }
+  })
+  const summary = resume.summary === LEGACY_PROFILE_SUMMARY
+    ? defaultResumeData.summary
+    : resume.summary
 
   const skillGroups = resume.skillGroups.map((group) => {
     const defaultGroup = defaultResumeData.skillGroups.find(({ id }) => id === group.id)
@@ -43,10 +67,12 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
 
   return {
     ...resume,
+    summary,
     personal: {
       ...resume.personal,
       website: resume.personal.website.trim() || defaultResumeData.personal.website,
     },
+    experience,
     skillGroups,
     projects,
   }
