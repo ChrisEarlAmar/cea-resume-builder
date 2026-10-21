@@ -692,22 +692,55 @@ a {
 
 .bullet-editor {
   display: grid;
-  grid-template-columns: 14px minmax(0, 1fr) auto;
+  grid-template-columns: 27px minmax(0, 1fr) 27px;
   align-items: start;
   gap: 6px;
   padding: 2px 0;
+  transition: opacity 140ms ease;
 }
 
-.bullet-editor__marker {
-  padding-top: 9px;
-  color: #555550;
-  font-size: 16px;
-  line-height: 1;
+.bullet-editor--dragging {
+  opacity: 0.42;
+}
+
+.bullet-editor--drop-before {
+  box-shadow: inset 0 2px 0 #171717;
+}
+
+.bullet-editor--drop-after {
+  box-shadow: inset 0 -2px 0 #171717;
+}
+
+.bullet-editor__drag-handle {
+  display: grid;
+  width: 27px;
+  height: 29px;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 0;
+  background: transparent;
+  color: #777772;
+  cursor: grab;
+}
+
+.bullet-editor__drag-handle:hover {
+  background: #efefeb;
+  color: #30302d;
+}
+
+.bullet-editor__drag-handle:active {
+  cursor: grabbing;
+}
+
+.bullet-editor__drag-handle:focus-visible {
+  border-color: #171717;
+  outline: 2px solid #171717;
+  outline-offset: 1px;
 }
 
 .bullet-editor__actions {
   display: flex;
-  gap: 1px;
   padding-top: 2px;
 }
 

@@ -1,4 +1,6 @@
-import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react'
+import { GripVertical, Plus, Trash2 } from 'lucide-react'
+import { useState } from 'react'
+import type { DragEvent, KeyboardEvent } from 'react'
 import type { Experience } from '../../types/resume'
 import { createId, moveItem, removeArrayItem, updateArrayItem } from '../../utils/resumeHelpers'
 import { Button } from '../ui/Button'
@@ -9,6 +11,15 @@ import { SectionCard } from './SectionCard'
 interface ExperienceEditorProps {
   experience: Experience[]
   onChange: (experience: Experience[]) => void
+}
+
+interface HighlightDragState {
+  experienceId: string
+  index: number
+}
+
+interface HighlightDropState extends HighlightDragState {
+  placement: 'before' | 'after'
 }
 
 const newExperience = (): Experience => ({
@@ -23,6 +34,10 @@ const newExperience = (): Experience => ({
 })
 
 export const ExperienceEditor = ({ experience, onChange }: ExperienceEditorProps) => {
+  const [draggingHighlight, setDraggingHighlight] = useState<HighlightDragState | null>(null)
+  const [dropTarget, setDropTarget] = useState<HighlightDropState | null>(null)
+  const [keyboardGrabbedHighlight, setKeyboardGrabbedHighlight] = useState<HighlightDragState | null>(null)
+
   const updateExperience = (id: string, patch: Partial<Experience>) =>
     onChange(updateArrayItem(experience, id, patch))
 
@@ -41,6 +56,19 @@ export const ExperienceEditor = ({ experience, onChange }: ExperienceEditorProps
     updateExperience(experienceId, { highlights: moveItem(target.highlights, from, to) })
   }
 
+  const reorderHighlight = (experienceId: string, from: number, target: number, placement: HighlightDropState['placement']) => {
+    if (from === target) return
+    const experienceItem = experience.find((item) => item.id === experienceId)
+    if (!experienceItem) return
+
+    const highlights = [...experienceItem.highlights]
+    const [highlight] = highlights.splice(from, 1)
+    const targetAfterRemoval = from < target ? target - 1 : target
+    const insertionIndex = targetAfterRemoval + (placement === 'after' ? 1 : 0)
+    highlights.splice(insertionIndex, 0, highlight)
+    updateExperience(experienceId, { highlights })
+  }
+
   const deleteHighlight = (experienceId: string, index: number) => {
     const target = experience.find((item) => item.id === experienceId)
     if (!target) return
@@ -51,6 +79,48 @@ export const ExperienceEditor = ({ experience, onChange }: ExperienceEditorProps
     if (!textarea) return
     textarea.style.height = '0px'
     textarea.style.height = `${textarea.scrollHeight}px`
+  }
+
+  const highlightHandleId = (experienceId: string, index: number) => `${experienceId}-highlight-handle-${index}`
+
+  const focusHighlightHandle = (experienceId: string, index: number) => {
+    window.requestAnimationFrame(() => document.getElementById(highlightHandleId(experienceId, index))?.focus())
+  }
+
+  const clearDragState = () => {
+    setDraggingHighlight(null)
+    setDropTarget(null)
+  }
+
+  const getDropPlacement = (event: DragEvent<HTMLDivElement>): HighlightDropState['placement'] => {
+    const bounds = event.currentTarget.getBoundingClientRect()
+    return event.clientY < bounds.top + bounds.height / 2 ? 'before' : 'after'
+  }
+
+  const handleHighlightKeyDown = (event: KeyboardEvent<HTMLButtonElement>, experienceId: string, index: number, total: number) => {
+    const isGrabbed = keyboardGrabbedHighlight?.experienceId === experienceId && keyboardGrabbedHighlight.index === index
+
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault()
+      setKeyboardGrabbedHighlight(isGrabbed ? null : { experienceId, index })
+      return
+    }
+
+    if (event.key === 'Escape' && isGrabbed) {
+      event.preventDefault()
+      setKeyboardGrabbedHighlight(null)
+      return
+    }
+
+    if (!isGrabbed || !['ArrowUp', 'ArrowDown'].includes(event.key)) return
+
+    event.preventDefault()
+    const destination = event.key === 'ArrowUp' ? index - 1 : index + 1
+    if (destination < 0 || destination >= total) return
+
+    moveHighlight(experienceId, index, destination)
+    setKeyboardGrabbedHighlight({ experienceId, index: destination })
+    focusHighlightHandle(experienceId, destination)
   }
 
   return (
@@ -93,8 +163,40 @@ export const ExperienceEditor = ({ experience, onChange }: ExperienceEditorProps
                 </Button>
               </div>
               {item.highlights.map((highlight, highlightIndex) => (
-                <div className="bullet-editor" key={`${item.id}-highlight-${highlightIndex}`}>
-                  <span className="bullet-editor__marker" aria-hidden="true">•</span>
+                <div
+                  className={`bullet-editor ${draggingHighlight?.experienceId === item.id && draggingHighlight.index === highlightIndex ? 'bullet-editor--dragging' : ''} ${dropTarget?.experienceId === item.id && dropTarget.index === highlightIndex ? `bullet-editor--drop-${dropTarget.placement}` : ''}`}
+                  key={`${item.id}-highlight-${highlightIndex}`}
+                  onDragOver={(event) => {
+                    if (!draggingHighlight || draggingHighlight.experienceId !== item.id) return
+                    event.preventDefault()
+                    event.dataTransfer.dropEffect = 'move'
+                    setDropTarget({ experienceId: item.id, index: highlightIndex, placement: getDropPlacement(event) })
+                  }}
+                  onDrop={(event) => {
+                    event.preventDefault()
+                    if (draggingHighlight?.experienceId === item.id) {
+                      reorderHighlight(item.id, draggingHighlight.index, highlightIndex, getDropPlacement(event))
+                    }
+                    clearDragState()
+                  }}
+                >
+                  <button
+                    aria-label={`Reorder highlight ${highlightIndex + 1}. Press Space or Enter to pick it up, then use the arrow keys to move it.`}
+                    aria-pressed={keyboardGrabbedHighlight?.experienceId === item.id && keyboardGrabbedHighlight.index === highlightIndex}
+                    className="bullet-editor__drag-handle"
+                    draggable
+                    id={highlightHandleId(item.id, highlightIndex)}
+                    onDragEnd={clearDragState}
+                    onDragStart={(event) => {
+                      event.dataTransfer.effectAllowed = 'move'
+                      setDraggingHighlight({ experienceId: item.id, index: highlightIndex })
+                    }}
+                    onKeyDown={(event) => handleHighlightKeyDown(event, item.id, highlightIndex, item.highlights.length)}
+                    title="Drag to reorder"
+                    type="button"
+                  >
+                    <GripVertical size={17} aria-hidden="true" />
+                  </button>
                   <label className="sr-only" htmlFor={`${item.id}-highlight-${highlightIndex}`}>Highlight {highlightIndex + 1}</label>
                   <textarea
                     id={`${item.id}-highlight-${highlightIndex}`}
@@ -108,27 +210,7 @@ export const ExperienceEditor = ({ experience, onChange }: ExperienceEditorProps
                       fitHighlightTextarea(event.currentTarget)
                     }}
                   />
-                  <div className="bullet-editor__actions" aria-label={`Controls for highlight ${highlightIndex + 1}`}>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      aria-label={`Move highlight ${highlightIndex + 1} up`}
-                      disabled={highlightIndex === 0}
-                      onClick={() => moveHighlight(item.id, highlightIndex, highlightIndex - 1)}
-                      title="Move highlight up"
-                    >
-                      <ChevronUp size={15} aria-hidden="true" />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      aria-label={`Move highlight ${highlightIndex + 1} down`}
-                      disabled={highlightIndex === item.highlights.length - 1}
-                      onClick={() => moveHighlight(item.id, highlightIndex, highlightIndex + 1)}
-                      title="Move highlight down"
-                    >
-                      <ChevronDown size={15} aria-hidden="true" />
-                    </Button>
+                  <div className="bullet-editor__actions">
                     <Button
                       size="icon"
                       variant="ghost"
