@@ -54,7 +54,7 @@ export const defaultResumeData: ResumeData = {
     {
       id: 'skills-data-tools',
       name: 'Data & Tools',
-      skills: ['MySQL', 'Oracle SQL Developer', 'GitLab', 'Docker (Beginner)'],
+      skills: ['MySQL', 'Oracle SQL Developer', 'GitLab', 'Docker'],
     },
   ],
   projects: [
@@ -64,7 +64,7 @@ export const defaultResumeData: ResumeData = {
       description:
         'Windows utility, packaged as an executable, for running and managing batch scripts for PHP Artisan commands, queues, and WebSocket servers.',
       technologies: ['Python', 'PHP Artisan', 'WebSockets'],
-      link: '',
+      link: 'https://github.com/ChrisEarlAmar/cea-batch-manager',
     },
     {
       id: 'project-mvp-survey-tool',
@@ -72,7 +72,15 @@ export const defaultResumeData: ResumeData = {
       description:
         'MVP survey platform for branch and store data collection, with WebSocket updates for real-time monitoring.',
       technologies: ['Laravel', 'React', 'WebSockets', 'Material UI'],
-      link: '',
+      link: 'https://github.com/ChrisEarlAmar/cea-mvp-survey',
+    },
+    {
+      id: 'project-quizey',
+      name: 'Quizey',
+      description:
+        'Quiz web app where people create and share quizzes without accounts; it stores data in IndexedDB and uses a custom .qzy file format for sharing.',
+      technologies: ['React', 'Vite', 'Tailwind CSS', 'shadcn/ui', 'Dexie.js'],
+      link: 'https://chrisearlamar.github.io/Quizey/',
     },
   ],
   certifications: [],

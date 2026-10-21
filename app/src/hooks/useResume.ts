@@ -9,20 +9,46 @@ export interface ResumeActions {
   reset: () => void
 }
 
-const addPersonalWebsiteToSavedResume = (resume: ResumeData): ResumeData => {
-  if (
-    resume.personal.email !== defaultResumeData.personal.email ||
-    resume.personal.website.trim()
-  ) {
+const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
+  if (resume.personal.email !== defaultResumeData.personal.email) {
     return resume
   }
+
+  const skillGroups = resume.skillGroups.map((group) => {
+    const defaultGroup = defaultResumeData.skillGroups.find(({ id }) => id === group.id)
+    if (!defaultGroup) return group
+
+    const skills = group.skills.map((skill) =>
+      skill === 'Docker (Beginner)' ? 'Docker' : skill,
+    )
+    const missingSkills = defaultGroup.skills.filter((skill) => !skills.includes(skill))
+
+    return missingSkills.length > 0
+      ? { ...group, skills: [...skills, ...missingSkills] }
+      : skills.some((skill, index) => skill !== group.skills[index])
+        ? { ...group, skills }
+        : group
+  })
+
+  const projectsWithLinks = resume.projects.map((project) => {
+    const defaultProject = defaultResumeData.projects.find(({ id }) => id === project.id)
+    return defaultProject && !project.link.trim()
+      ? { ...project, link: defaultProject.link }
+      : project
+  })
+  const quizeyProject = defaultResumeData.projects.find(({ id }) => id === 'project-quizey')
+  const projects = quizeyProject && !projectsWithLinks.some(({ id }) => id === quizeyProject.id)
+    ? [...projectsWithLinks, { ...quizeyProject, technologies: [...quizeyProject.technologies] }]
+    : projectsWithLinks
 
   return {
     ...resume,
     personal: {
       ...resume.personal,
-      website: defaultResumeData.personal.website,
+      website: resume.personal.website.trim() || defaultResumeData.personal.website,
     },
+    skillGroups,
+    projects,
   }
 }
 
@@ -30,7 +56,7 @@ export const useResume = (): ResumeActions => {
   const [data, setData] = useState<ResumeData>(() => {
     const savedResume = readResume()
     return savedResume && !isLegacyFictionalStarter(savedResume)
-      ? addPersonalWebsiteToSavedResume(savedResume)
+      ? applyProfileUpdatesToSavedResume(savedResume)
       : cloneDefaultResume()
   })
 
