@@ -87,8 +87,10 @@ const App = () => {
               <p className="preview-toolbar__hint">Downloads use selectable text and vector layout.</p>
             </div>
             <div className="preview-scroll">
-              <div className="preview-paper-holder" id="resume-preview" role="tabpanel" aria-labelledby={`template-tab-${template}`}>
-                <ResumeTemplate data={data} template={template} />
+              <div className="preview-stage">
+                <div className="preview-paper-holder" id="resume-preview" role="tabpanel" aria-labelledby={`template-tab-${template}`}>
+                  <ResumeTemplate data={data} template={template} />
+                </div>
               </div>
             </div>
           </section>
