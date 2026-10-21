@@ -1,10 +1,11 @@
 import { Document, Link, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
 import React from 'react'
-import type { Certification, Education, Experience, Project, ResumeData, SkillGroup } from '../../types/resume'
+import type { Certification, Education, Experience, Project, ResumeData, ResumeTemplateId, SkillGroup } from '../../types/resume'
 import { formatDateRange, formatUrlLabel, toHttpUrl } from '../../utils/resumeHelpers'
 
 interface PDFResumeDocumentProps {
   data: ResumeData
+  template?: ResumeTemplateId
 }
 
 const mm = (value: number): number => value * 2.83465
@@ -170,6 +171,250 @@ const styles = StyleSheet.create({
     fontSize: 7.8,
     textDecoration: 'underline',
   },
+  classicPage: {
+    paddingTop: mm(14),
+    paddingRight: mm(18),
+    paddingBottom: mm(13),
+    paddingLeft: mm(18),
+  },
+  compactPage: {
+    paddingTop: mm(12),
+    paddingRight: mm(13),
+    paddingBottom: mm(10),
+    paddingLeft: mm(13),
+    fontSize: 9.4,
+    lineHeight: 1.42,
+  },
+  sidebarPage: {
+    paddingTop: mm(14),
+    paddingRight: mm(14),
+    paddingBottom: mm(12),
+    paddingLeft: mm(14),
+  },
+  minimalPage: {
+    paddingTop: mm(17),
+    paddingRight: mm(19),
+    paddingBottom: mm(14),
+    paddingLeft: mm(19),
+  },
+  classicHeader: {
+    paddingBottom: mm(5),
+    borderBottomWidth: 1.1,
+    borderBottomColor: '#111111',
+  },
+  sidebarHeader: {
+    paddingBottom: mm(5),
+    borderBottomWidth: 1.1,
+    borderBottomColor: '#111111',
+  },
+  compactHeader: {
+    marginBottom: mm(4),
+  },
+  compactName: {
+    marginBottom: mm(2),
+    fontSize: 23,
+  },
+  compactTitle: {
+    marginBottom: mm(3),
+    fontSize: 8.2,
+  },
+  compactContact: {
+    width: mm(54),
+    fontSize: 7.7,
+    lineHeight: 1.45,
+  },
+  compactIdentity: {
+    paddingRight: mm(7),
+  },
+  minimalHeader: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: mm(4),
+    paddingBottom: mm(6),
+    borderBottomWidth: 0.8,
+    borderBottomColor: '#969690',
+  },
+  minimalIdentity: {
+    paddingRight: 0,
+    alignItems: 'center',
+  },
+  minimalName: {
+    marginBottom: mm(2),
+    fontSize: 25,
+    textAlign: 'center',
+  },
+  minimalTitle: {
+    marginBottom: mm(2.5),
+    textAlign: 'center',
+  },
+  minimalRule: {
+    width: mm(24),
+  },
+  minimalContact: {
+    width: '100%',
+    marginTop: mm(3),
+    textAlign: 'center',
+  },
+  classicRule: {
+    height: 0,
+    backgroundColor: '#ffffff',
+  },
+  sidebarRule: {
+    width: mm(30),
+    height: 0.8,
+  },
+  stackedSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginTop: mm(5),
+  },
+  stackedFirstSection: {
+    marginTop: mm(5),
+  },
+  classicSection: {
+    paddingTop: mm(3),
+    borderTopWidth: 0.7,
+    borderTopColor: '#a7a7a1',
+  },
+  compactSection: {
+    marginTop: mm(4.2),
+  },
+  compactFirstSection: {
+    marginTop: mm(5),
+  },
+  stackedSectionLabel: {
+    width: 'auto',
+    marginRight: 0,
+    marginBottom: mm(2.4),
+    fontSize: 8.4,
+    letterSpacing: 1.1,
+  },
+  compactSectionLabel: {
+    width: mm(25),
+    marginRight: mm(5),
+    fontSize: 7.6,
+  },
+  compactSummary: {
+    fontSize: 9.4,
+    lineHeight: 1.42,
+  },
+  compactEntries: {
+    gap: mm(3.4),
+  },
+  compactEntry: {
+    gap: mm(3.5),
+  },
+  compactRail: {
+    width: mm(21),
+    marginRight: 0,
+    fontSize: 7.4,
+  },
+  compactEntryTitle: {
+    marginBottom: mm(0.9),
+    fontSize: 9.8,
+  },
+  compactEntryMeta: {
+    marginBottom: mm(1.5),
+    fontSize: 8.4,
+  },
+  compactDescription: {
+    fontSize: 8.05,
+    lineHeight: 1.36,
+  },
+  compactHighlights: {
+    gap: mm(0.7),
+  },
+  compactStack: {
+    marginTop: mm(1.5),
+    fontSize: 7.8,
+  },
+  compactSkills: {
+    rowGap: mm(2.2),
+  },
+  compactSkillGroup: {
+    width: '100%',
+  },
+  compactSkillTitle: {
+    marginBottom: mm(0.6),
+    fontSize: 7.8,
+  },
+  compactSkillList: {
+    fontSize: 7.8,
+    lineHeight: 1.34,
+  },
+  classicEntry: {
+    flexDirection: 'row',
+  },
+  classicBody: {
+    marginRight: mm(5),
+  },
+  classicRail: {
+    width: mm(32),
+    marginRight: 0,
+    textAlign: 'right',
+  },
+  minimalEntry: {
+    flexDirection: 'column',
+    gap: mm(1.2),
+  },
+  minimalRail: {
+    width: 'auto',
+    marginRight: 0,
+    fontSize: 7.8,
+  },
+  sidebarLayout: {
+    flexDirection: 'row',
+    marginTop: mm(6),
+  },
+  sidebarFirstSection: {
+    marginTop: 0,
+  },
+  sidebarAside: {
+    width: mm(43),
+    marginRight: mm(8),
+    paddingRight: mm(5),
+    borderRightWidth: 0.7,
+    borderRightColor: '#afafa9',
+  },
+  sidebarMain: {
+    flex: 1,
+  },
+  sidebarEntry: {
+    flexDirection: 'column',
+    gap: mm(0.8),
+  },
+  sidebarRail: {
+    width: 'auto',
+    marginRight: 0,
+    fontSize: 7.4,
+  },
+  sidebarEntryTitle: {
+    fontSize: 9.1,
+  },
+  sidebarEntryMeta: {
+    marginBottom: mm(1.5),
+    fontSize: 8.2,
+  },
+  sidebarDescription: {
+    fontSize: 8,
+    lineHeight: 1.37,
+  },
+  sidebarSkills: {
+    flexDirection: 'column',
+    rowGap: mm(3),
+  },
+  sidebarSkillGroup: {
+    width: '100%',
+    paddingRight: 0,
+  },
+  sidebarSkillTitle: {
+    marginBottom: mm(0.7),
+    fontSize: 8.1,
+  },
+  sidebarSkillList: {
+    fontSize: 8,
+    lineHeight: 1.38,
+  },
 })
 
 const hasExperienceContent = (item: Experience): boolean => Boolean(
@@ -200,27 +445,64 @@ interface SectionProps {
   label: string
   children: React.ReactNode
   first?: boolean
+  template: ResumeTemplateId
 }
 
-const PDFSection = ({ label, children, first = false }: SectionProps) => (
-  <View style={[styles.section, first ? styles.firstSection : undefined]}>
-    <Text style={styles.sectionLabel}>{label}</Text>
+const PDFSection = ({ label, children, first = false, template }: SectionProps) => {
+  const stacked = template === 'classic' || template === 'sidebar' || template === 'minimal'
+  return (
+  <View
+    style={[
+      styles.section,
+      first ? styles.firstSection : undefined,
+      stacked ? styles.stackedSection : undefined,
+      stacked && first ? styles.stackedFirstSection : undefined,
+      template === 'classic' ? styles.classicSection : undefined,
+      template === 'compact' ? styles.compactSection : undefined,
+      template === 'compact' && first ? styles.compactFirstSection : undefined,
+    ]}
+  >
+    <Text style={[
+      styles.sectionLabel,
+      stacked ? styles.stackedSectionLabel : undefined,
+      template === 'compact' ? styles.compactSectionLabel : undefined,
+    ]}>{label}</Text>
     <View style={styles.sectionContent}>{children}</View>
   </View>
-)
+  )
+}
 
-const PDFHeader = ({ data }: { data: ResumeData }) => {
+const PDFHeader = ({ data, template }: { data: ResumeData, template: ResumeTemplateId }) => {
   const contactDetails = [data.personal.email, data.personal.phone, data.personal.location].filter(Boolean)
   const links = [data.personal.linkedin, data.personal.github, data.personal.website].filter(Boolean)
   return (
-    <View style={styles.header}>
-      <View style={styles.identity}>
-        {data.personal.name ? <Text style={styles.name}>{data.personal.name}</Text> : null}
-        {data.personal.title ? <Text style={styles.title}>{data.personal.title}</Text> : null}
-        <View style={styles.rule} />
+    <View style={[
+      styles.header,
+      template === 'classic' ? styles.classicHeader : undefined,
+      template === 'compact' ? styles.compactHeader : undefined,
+      template === 'sidebar' ? styles.sidebarHeader : undefined,
+      template === 'minimal' ? styles.minimalHeader : undefined,
+    ]}>
+      <View style={[
+        styles.identity,
+        template === 'compact' ? styles.compactIdentity : undefined,
+        template === 'minimal' ? styles.minimalIdentity : undefined,
+      ]}>
+        {data.personal.name ? <Text style={[styles.name, template === 'compact' ? styles.compactName : undefined, template === 'minimal' ? styles.minimalName : undefined]}>{data.personal.name}</Text> : null}
+        {data.personal.title ? <Text style={[styles.title, template === 'compact' ? styles.compactTitle : undefined, template === 'minimal' ? styles.minimalTitle : undefined]}>{data.personal.title}</Text> : null}
+        <View style={[
+          styles.rule,
+          template === 'classic' ? styles.classicRule : undefined,
+          template === 'sidebar' ? styles.sidebarRule : undefined,
+          template === 'minimal' ? styles.minimalRule : undefined,
+        ]} />
       </View>
       {(contactDetails.length > 0 || links.length > 0) ? (
-        <View style={styles.contact}>
+        <View style={[
+          styles.contact,
+          template === 'compact' ? styles.compactContact : undefined,
+          template === 'minimal' ? styles.minimalContact : undefined,
+        ]}>
           {contactDetails.map((detail) => <Text key={detail}>{detail}</Text>)}
           {links.map((value) => {
             const url = toHttpUrl(value)
@@ -233,36 +515,54 @@ const PDFHeader = ({ data }: { data: ResumeData }) => {
   )
 }
 
-const PDFExperience = ({ items }: { items: Experience[] }) => {
+const PDFExperience = ({ items, template }: { items: Experience[], template: ResumeTemplateId }) => {
   const experience = items.filter(hasExperienceContent)
   if (experience.length === 0) return null
   return (
-    <PDFSection label="Experience">
-      <View style={styles.entries}>
+    <PDFSection label="Experience" template={template}>
+      <View style={[styles.entries, template === 'compact' ? styles.compactEntries : undefined]}>
         {experience.map((item) => {
           const meta = [item.company, item.location].filter(Boolean).join(' / ')
           const highlights = item.highlights.filter((highlight) => highlight.trim())
+          const entryBody = (
+            <View style={[
+              styles.entryBody,
+              template === 'classic' ? styles.classicBody : undefined,
+            ]}>
+              {item.position ? <Text style={[styles.entryTitle, template === 'compact' ? styles.compactEntryTitle : undefined, template === 'sidebar' ? styles.sidebarEntryTitle : undefined]}>{item.position}</Text> : null}
+              {meta ? <Text style={[styles.entryMeta, template === 'compact' ? styles.compactEntryMeta : undefined, template === 'sidebar' ? styles.sidebarEntryMeta : undefined]}>{meta}</Text> : null}
+              {highlights.length > 0 ? (
+                <View style={[styles.highlights, template === 'compact' ? styles.compactHighlights : undefined]}>
+                  {highlights.map((highlight, index) => (
+                    <View style={styles.highlight} key={`${item.id}-${index}`}>
+                      <Text style={[styles.marker, template === 'compact' ? styles.compactDescription : undefined, template === 'sidebar' ? styles.sidebarDescription : undefined]}>-</Text>
+                      <Text style={[styles.highlightText, template === 'compact' ? styles.compactDescription : undefined, template === 'sidebar' ? styles.sidebarDescription : undefined]}>{highlight}</Text>
+                    </View>
+                  ))}
+                </View>
+              ) : null}
+            </View>
+          )
+          const rail = <Text style={[
+            styles.rail,
+            template === 'classic' ? styles.classicRail : undefined,
+            template === 'compact' ? styles.compactRail : undefined,
+            template === 'sidebar' ? styles.sidebarRail : undefined,
+            template === 'minimal' ? styles.minimalRail : undefined,
+          ]}>{formatPdfDateRange(item.startDate, item.endDate, item.current)}</Text>
           return (
             <View
               key={item.id}
-              style={styles.entry}
+              style={[
+                styles.entry,
+                template === 'classic' ? styles.classicEntry : undefined,
+                template === 'compact' ? styles.compactEntry : undefined,
+                template === 'sidebar' ? styles.sidebarEntry : undefined,
+                template === 'minimal' ? styles.minimalEntry : undefined,
+              ]}
               wrap={!keepEntryTogether([item.position, item.company, item.location, ...highlights])}
             >
-              <Text style={styles.rail}>{formatPdfDateRange(item.startDate, item.endDate, item.current)}</Text>
-              <View style={styles.entryBody}>
-                {item.position ? <Text style={styles.entryTitle}>{item.position}</Text> : null}
-                {meta ? <Text style={styles.entryMeta}>{meta}</Text> : null}
-                {highlights.length > 0 ? (
-                  <View style={styles.highlights}>
-                    {highlights.map((highlight, index) => (
-                      <View style={styles.highlight} key={`${item.id}-${index}`}>
-                        <Text style={styles.marker}>-</Text>
-                        <Text style={styles.highlightText}>{highlight}</Text>
-                      </View>
-                    ))}
-                  </View>
-                ) : null}
-              </View>
+              {template === 'classic' || template === 'sidebar' || template === 'minimal' ? <>{entryBody}{rail}</> : <>{rail}{entryBody}</>}
             </View>
           )
         })}
@@ -271,26 +571,41 @@ const PDFExperience = ({ items }: { items: Experience[] }) => {
   )
 }
 
-const PDFEducation = ({ items }: { items: Education[] }) => {
+const PDFEducation = ({ items, template }: { items: Education[], template: ResumeTemplateId }) => {
   const education = items.filter(hasEducationContent)
   if (education.length === 0) return null
   return (
-    <PDFSection label="Education">
-      <View style={styles.entries}>
+    <PDFSection label="Education" template={template}>
+      <View style={[styles.entries, template === 'compact' ? styles.compactEntries : undefined]}>
         {education.map((item) => {
           const degree = [item.degree, item.field].filter(Boolean).join(', ')
+          const entryBody = (
+            <View style={[styles.entryBody, template === 'classic' ? styles.classicBody : undefined]}>
+              {degree ? <Text style={[styles.entryTitle, template === 'compact' ? styles.compactEntryTitle : undefined, template === 'sidebar' ? styles.sidebarEntryTitle : undefined]}>{degree}</Text> : null}
+              {item.institution ? <Text style={[styles.entryMeta, template === 'compact' ? styles.compactEntryMeta : undefined, template === 'sidebar' ? styles.sidebarEntryMeta : undefined]}>{item.institution}</Text> : null}
+              {item.description ? <Text style={[styles.description, template === 'compact' ? styles.compactDescription : undefined, template === 'sidebar' ? styles.sidebarDescription : undefined]}>{item.description}</Text> : null}
+            </View>
+          )
+          const rail = <Text style={[
+            styles.rail,
+            template === 'classic' ? styles.classicRail : undefined,
+            template === 'compact' ? styles.compactRail : undefined,
+            template === 'sidebar' ? styles.sidebarRail : undefined,
+            template === 'minimal' ? styles.minimalRail : undefined,
+          ]}>{formatPdfDateRange(item.startDate, item.endDate)}</Text>
           return (
             <View
               key={item.id}
-              style={styles.entry}
+              style={[
+                styles.entry,
+                template === 'classic' ? styles.classicEntry : undefined,
+                template === 'compact' ? styles.compactEntry : undefined,
+                template === 'sidebar' ? styles.sidebarEntry : undefined,
+                template === 'minimal' ? styles.minimalEntry : undefined,
+              ]}
               wrap={!keepEntryTogether([item.degree, item.field, item.institution, item.description])}
             >
-              <Text style={styles.rail}>{formatPdfDateRange(item.startDate, item.endDate)}</Text>
-              <View style={styles.entryBody}>
-                {degree ? <Text style={styles.entryTitle}>{degree}</Text> : null}
-                {item.institution ? <Text style={styles.entryMeta}>{item.institution}</Text> : null}
-                {item.description ? <Text style={styles.description}>{item.description}</Text> : null}
-              </View>
+              {template === 'classic' || template === 'sidebar' || template === 'minimal' ? <>{entryBody}{rail}</> : <>{rail}{entryBody}</>}
             </View>
           )
         })}
@@ -299,18 +614,34 @@ const PDFEducation = ({ items }: { items: Education[] }) => {
   )
 }
 
-const PDFSkills = ({ items }: { items: SkillGroup[] }) => {
+const PDFSkills = ({ items, template }: { items: SkillGroup[], template: ResumeTemplateId }) => {
   const groups = items
     .map((group) => ({ ...group, skills: group.skills.filter((skill) => skill.trim()) }))
     .filter((group) => group.skills.length > 0)
   if (groups.length === 0) return null
   return (
-    <PDFSection label="Skills">
-      <View style={styles.skills}>
+    <PDFSection label="Skills" template={template}>
+      <View style={[
+        styles.skills,
+        template === 'compact' ? styles.compactSkills : undefined,
+        template === 'sidebar' ? styles.sidebarSkills : undefined,
+      ]}>
         {groups.map((group) => (
-          <View key={group.id} style={styles.skillGroup} wrap={false}>
-            {group.name ? <Text style={styles.skillTitle}>{group.name}</Text> : null}
-            <Text style={styles.skillList}>{group.skills.join(', ')}</Text>
+          <View key={group.id} style={[
+            styles.skillGroup,
+            template === 'compact' ? styles.compactSkillGroup : undefined,
+            template === 'sidebar' ? styles.sidebarSkillGroup : undefined,
+          ]} wrap={false}>
+            {group.name ? <Text style={[
+              styles.skillTitle,
+              template === 'compact' ? styles.compactSkillTitle : undefined,
+              template === 'sidebar' ? styles.sidebarSkillTitle : undefined,
+            ]}>{group.name}</Text> : null}
+            <Text style={[
+              styles.skillList,
+              template === 'compact' ? styles.compactSkillList : undefined,
+              template === 'sidebar' ? styles.sidebarSkillList : undefined,
+            ]}>{group.skills.join(', ')}</Text>
           </View>
         ))}
       </View>
@@ -318,33 +649,48 @@ const PDFSkills = ({ items }: { items: SkillGroup[] }) => {
   )
 }
 
-const PDFProjects = ({ items }: { items: Project[] }) => {
+const PDFProjects = ({ items, template }: { items: Project[], template: ResumeTemplateId }) => {
   const projects = items.filter(hasProjectContent)
   if (projects.length === 0) return null
   return (
-    <PDFSection label="Projects">
-      <View style={styles.entries}>
+    <PDFSection label="Projects" template={template}>
+      <View style={[styles.entries, template === 'compact' ? styles.compactEntries : undefined]}>
         {projects.map((project, index) => {
           const link = toHttpUrl(project.link)
           const linkLabel = formatUrlLabel(project.link)
           const technologies = project.technologies.filter((technology) => technology.trim())
+          const entryBody = (
+            <View style={[styles.entryBody, template === 'classic' ? styles.classicBody : undefined]}>
+              {project.name ? (
+                <View style={styles.entryTitleRow}>
+                  <Text style={[styles.entryTitle, template === 'compact' ? styles.compactEntryTitle : undefined, template === 'sidebar' ? styles.sidebarEntryTitle : undefined]}>{project.name}</Text>
+                  {link ? <Link src={link} style={styles.inlineLink}>{linkLabel}</Link> : null}
+                </View>
+              ) : null}
+              {project.description ? <Text style={[styles.description, template === 'compact' ? styles.compactDescription : undefined, template === 'sidebar' ? styles.sidebarDescription : undefined]}>{project.description}</Text> : null}
+              {technologies.length > 0 ? <Text style={[styles.stack, template === 'compact' ? styles.compactStack : undefined]}><Text style={styles.stackLabel}>Stack </Text>{technologies.join(', ')}</Text> : null}
+            </View>
+          )
+          const rail = <Text style={[
+            styles.rail,
+            template === 'classic' ? styles.classicRail : undefined,
+            template === 'compact' ? styles.compactRail : undefined,
+            template === 'sidebar' ? styles.sidebarRail : undefined,
+            template === 'minimal' ? styles.minimalRail : undefined,
+          ]}>{String(index + 1).padStart(2, '0')}</Text>
           return (
             <View
               key={project.id}
-              style={styles.entry}
+              style={[
+                styles.entry,
+                template === 'classic' ? styles.classicEntry : undefined,
+                template === 'compact' ? styles.compactEntry : undefined,
+                template === 'sidebar' ? styles.sidebarEntry : undefined,
+                template === 'minimal' ? styles.minimalEntry : undefined,
+              ]}
               wrap={!keepEntryTogether([project.name, project.description, ...technologies])}
             >
-              <Text style={styles.rail}>{String(index + 1).padStart(2, '0')}</Text>
-              <View style={styles.entryBody}>
-                {project.name ? (
-                  <View style={styles.entryTitleRow}>
-                    <Text style={styles.entryTitle}>{project.name}</Text>
-                    {link ? <Link src={link} style={styles.inlineLink}>{linkLabel}</Link> : null}
-                  </View>
-                ) : null}
-                {project.description ? <Text style={styles.description}>{project.description}</Text> : null}
-                {technologies.length > 0 ? <Text style={styles.stack}><Text style={styles.stackLabel}>Stack </Text>{technologies.join(', ')}</Text> : null}
-              </View>
+              {template === 'classic' || template === 'sidebar' || template === 'minimal' ? <>{entryBody}{rail}</> : <>{rail}{entryBody}</>}
             </View>
           )
         })}
@@ -353,30 +699,45 @@ const PDFProjects = ({ items }: { items: Project[] }) => {
   )
 }
 
-const PDFCertifications = ({ items }: { items: Certification[] }) => {
+const PDFCertifications = ({ items, template }: { items: Certification[], template: ResumeTemplateId }) => {
   const certifications = items.filter(hasCertificationContent)
   if (certifications.length === 0) return null
   return (
-    <PDFSection label="Credentials">
-      <View style={styles.entries}>
+    <PDFSection label="Credentials" template={template}>
+      <View style={[styles.entries, template === 'compact' ? styles.compactEntries : undefined]}>
         {certifications.map((certification) => {
           const url = toHttpUrl(certification.url)
+          const entryBody = (
+            <View style={[styles.entryBody, template === 'classic' ? styles.classicBody : undefined]}>
+              {certification.name ? (
+                <View style={styles.entryTitleRow}>
+                  <Text style={[styles.entryTitle, template === 'compact' ? styles.compactEntryTitle : undefined, template === 'sidebar' ? styles.sidebarEntryTitle : undefined]}>{certification.name}</Text>
+                  {url ? <Link src={url} style={styles.inlineLink}>Verify</Link> : null}
+                </View>
+              ) : null}
+              {certification.issuer ? <Text style={[styles.entryMeta, template === 'compact' ? styles.compactEntryMeta : undefined, template === 'sidebar' ? styles.sidebarEntryMeta : undefined]}>{certification.issuer}</Text> : null}
+            </View>
+          )
+          const rail = <Text style={[
+            styles.rail,
+            template === 'classic' ? styles.classicRail : undefined,
+            template === 'compact' ? styles.compactRail : undefined,
+            template === 'sidebar' ? styles.sidebarRail : undefined,
+            template === 'minimal' ? styles.minimalRail : undefined,
+          ]}>{certification.date}</Text>
           return (
             <View
               key={certification.id}
-              style={styles.entry}
+              style={[
+                styles.entry,
+                template === 'classic' ? styles.classicEntry : undefined,
+                template === 'compact' ? styles.compactEntry : undefined,
+                template === 'sidebar' ? styles.sidebarEntry : undefined,
+                template === 'minimal' ? styles.minimalEntry : undefined,
+              ]}
               wrap={!keepEntryTogether([certification.name, certification.issuer, certification.date])}
             >
-              <Text style={styles.rail}>{certification.date}</Text>
-              <View style={styles.entryBody}>
-                {certification.name ? (
-                  <View style={styles.entryTitleRow}>
-                    <Text style={styles.entryTitle}>{certification.name}</Text>
-                    {url ? <Link src={url} style={styles.inlineLink}>Verify</Link> : null}
-                  </View>
-                ) : null}
-                {certification.issuer ? <Text style={styles.entryMeta}>{certification.issuer}</Text> : null}
-              </View>
+              {template === 'classic' || template === 'sidebar' || template === 'minimal' ? <>{entryBody}{rail}</> : <>{rail}{entryBody}</>}
             </View>
           )
         })}
@@ -385,20 +746,66 @@ const PDFCertifications = ({ items }: { items: Certification[] }) => {
   )
 }
 
-export const PDFResumeDocument = ({ data }: PDFResumeDocumentProps) => (
+const PDFSummary = ({ summary, template, first = false }: { summary: string, template: ResumeTemplateId, first?: boolean }) => {
+  if (!summary.trim()) return null
+  return (
+    <PDFSection label="Profile" first={first} template={template}>
+      <Text style={[styles.summary, template === 'compact' ? styles.compactSummary : undefined]}>{summary}</Text>
+    </PDFSection>
+  )
+}
+
+const PDFSidebarContent = ({ data }: { data: ResumeData }) => (
+  <View style={styles.sidebarLayout}>
+    <View style={styles.sidebarAside}>
+      <View style={styles.sidebarFirstSection}>
+        <PDFSkills items={data.skillGroups} template="sidebar" />
+      </View>
+      <PDFEducation items={data.education} template="sidebar" />
+      <PDFCertifications items={data.certifications} template="sidebar" />
+    </View>
+    <View style={styles.sidebarMain}>
+      <View style={styles.sidebarFirstSection}>
+        <PDFSummary summary={data.summary} template="sidebar" />
+      </View>
+      <PDFExperience items={data.experience} template="sidebar" />
+      <PDFProjects items={data.projects} template="sidebar" />
+    </View>
+  </View>
+)
+
+const PDFStandardContent = ({ data, template }: { data: ResumeData, template: ResumeTemplateId }) => (
+  <>
+    <PDFSummary summary={data.summary} template={template} first />
+    <PDFExperience items={data.experience} template={template} />
+    {template === 'minimal' ? (
+      <>
+        <PDFProjects items={data.projects} template={template} />
+        <PDFSkills items={data.skillGroups} template={template} />
+        <PDFEducation items={data.education} template={template} />
+      </>
+    ) : (
+      <>
+        <PDFEducation items={data.education} template={template} />
+        <PDFSkills items={data.skillGroups} template={template} />
+        <PDFProjects items={data.projects} template={template} />
+      </>
+    )}
+    <PDFCertifications items={data.certifications} template={template} />
+  </>
+)
+
+export const PDFResumeDocument = ({ data, template = 'axis' }: PDFResumeDocumentProps) => (
   <Document title={`${data.personal.name || 'Resume'} - Resume`} author={data.personal.name || undefined}>
-    <Page size="A4" style={styles.page} wrap>
-      <PDFHeader data={data} />
-      {data.summary.trim() ? (
-        <PDFSection label="Profile" first>
-          <Text style={styles.summary}>{data.summary}</Text>
-        </PDFSection>
-      ) : null}
-      <PDFExperience items={data.experience} />
-      <PDFEducation items={data.education} />
-      <PDFSkills items={data.skillGroups} />
-      <PDFProjects items={data.projects} />
-      <PDFCertifications items={data.certifications} />
+    <Page size="A4" style={[
+      styles.page,
+      template === 'classic' ? styles.classicPage : undefined,
+      template === 'compact' ? styles.compactPage : undefined,
+      template === 'sidebar' ? styles.sidebarPage : undefined,
+      template === 'minimal' ? styles.minimalPage : undefined,
+    ]} wrap>
+      <PDFHeader data={data} template={template} />
+      {template === 'sidebar' ? <PDFSidebarContent data={data} /> : <PDFStandardContent data={data} template={template} />}
     </Page>
   </Document>
 )

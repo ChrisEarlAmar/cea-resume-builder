@@ -1,13 +1,17 @@
-import { FileDown, LoaderCircle, RotateCcw, Sparkles } from 'lucide-react'
+import { RotateCcw, Sparkles } from 'lucide-react'
 import { useState } from 'react'
 import { EditorModeSwitch } from './components/editor/EditorModeSwitch'
 import type { EditorMode } from './components/editor/EditorModeSwitch'
 import { JsonResumeEditor } from './components/editor/JsonResumeEditor'
 import { ResumeEditor } from './components/editor/ResumeEditor'
 import { ResumeTemplate } from './components/resume/ResumeTemplate'
+import { TemplateTabs } from './components/resume/TemplateTabs'
 import { Button } from './components/ui/Button'
+import { DownloadMenu } from './components/ui/DownloadMenu'
 import { Modal } from './components/ui/Modal'
+import { getResumeTemplateOption } from './data/resumeTemplates'
 import { useResume } from './hooks/useResume'
+import type { ResumeTemplateId } from './types/resume'
 
 const App = () => {
   const { data, updateData, reset } = useResume()
@@ -15,14 +19,16 @@ const App = () => {
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false)
   const [pdfError, setPdfError] = useState<string | null>(null)
   const [editorMode, setEditorMode] = useState<EditorMode>('form')
+  const [template, setTemplate] = useState<ResumeTemplateId>('axis')
+  const activeTemplate = getResumeTemplateOption(template)
 
-  const handleDownload = async () => {
+  const handleDownload = async (downloadTemplate: ResumeTemplateId) => {
     if (isGeneratingPdf) return
     setIsGeneratingPdf(true)
     setPdfError(null)
     try {
       const { downloadResumePdf } = await import('./utils/downloadPdf')
-      await downloadResumePdf(data)
+      await downloadResumePdf(data, downloadTemplate)
     } catch {
       setPdfError('The PDF could not be created. Please try again.')
     } finally {
@@ -50,10 +56,7 @@ const App = () => {
             <Button variant="ghost" size="small" onClick={() => setIsResetModalOpen(true)}>
               <RotateCcw size={15} aria-hidden="true" /> Reset
             </Button>
-            <Button variant="primary" size="small" disabled={isGeneratingPdf} aria-busy={isGeneratingPdf} onClick={handleDownload}>
-              {isGeneratingPdf ? <LoaderCircle className="spin" size={16} aria-hidden="true" /> : <FileDown size={16} aria-hidden="true" />}
-              {isGeneratingPdf ? 'Preparing PDF…' : 'Download PDF'}
-            </Button>
+            <DownloadMenu activeTemplate={template} isGenerating={isGeneratingPdf} onDownload={handleDownload} />
           </div>
           {pdfError ? <p className="pdf-error" role="alert">{pdfError}</p> : null}
         </header>
@@ -76,15 +79,16 @@ const App = () => {
 
           <section className="preview-pane" aria-label="Live resume preview">
             <div className="preview-toolbar">
-              <div>
+              <div className="preview-toolbar__title">
                 <p className="eyebrow">Live preview</p>
-                <h2>Axis — A4</h2>
+                <h2>{activeTemplate.label} <span>— A4</span></h2>
+                <TemplateTabs value={template} onChange={setTemplate} />
               </div>
               <p className="preview-toolbar__hint">Downloads use selectable text and vector layout.</p>
             </div>
             <div className="preview-scroll">
-              <div className="preview-paper-holder">
-                <ResumeTemplate data={data} template="axis" />
+              <div className="preview-paper-holder" id="resume-preview" role="tabpanel" aria-labelledby={`template-tab-${template}`}>
+                <ResumeTemplate data={data} template={template} />
               </div>
             </div>
           </section>
