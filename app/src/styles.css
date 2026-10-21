@@ -608,6 +608,12 @@ a {
   min-height: 54px;
 }
 
+.field__textarea--highlight {
+  min-height: 62px;
+  overflow: hidden;
+  resize: none;
+}
+
 .field__hint {
   color: #7a7a75;
   font-size: 10px;
@@ -686,15 +692,30 @@ a {
 
 .bullet-editor {
   display: grid;
-  grid-template-columns: 12px minmax(0, 1fr) 31px;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
   align-items: start;
-  gap: 5px;
+  gap: 6px;
+  padding: 2px 0;
 }
 
 .bullet-editor__marker {
-  padding-top: 10px;
+  padding-top: 9px;
   color: #555550;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.bullet-editor__actions {
+  display: flex;
+  gap: 1px;
+  padding-top: 2px;
+}
+
+.bullet-editor__actions .button--icon {
+  width: 27px;
+  min-width: 27px;
+  height: 27px;
+  min-height: 27px;
 }
 
 .inline-field-row {

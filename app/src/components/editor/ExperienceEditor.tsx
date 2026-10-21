@@ -1,4 +1,4 @@
-import { Plus, Trash2 } from 'lucide-react'
+import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react'
 import type { Experience } from '../../types/resume'
 import { createId, moveItem, removeArrayItem, updateArrayItem } from '../../utils/resumeHelpers'
 import { Button } from '../ui/Button'
@@ -33,6 +33,24 @@ export const ExperienceEditor = ({ experience, onChange }: ExperienceEditorProps
       highlightIndex === index ? value : highlight,
     )
     updateExperience(experienceId, { highlights })
+  }
+
+  const moveHighlight = (experienceId: string, from: number, to: number) => {
+    const target = experience.find((item) => item.id === experienceId)
+    if (!target) return
+    updateExperience(experienceId, { highlights: moveItem(target.highlights, from, to) })
+  }
+
+  const deleteHighlight = (experienceId: string, index: number) => {
+    const target = experience.find((item) => item.id === experienceId)
+    if (!target) return
+    updateExperience(experienceId, { highlights: target.highlights.filter((_, currentIndex) => currentIndex !== index) })
+  }
+
+  const fitHighlightTextarea = (textarea: HTMLTextAreaElement | null) => {
+    if (!textarea) return
+    textarea.style.height = '0px'
+    textarea.style.height = `${textarea.scrollHeight}px`
   }
 
   return (
@@ -76,24 +94,51 @@ export const ExperienceEditor = ({ experience, onChange }: ExperienceEditorProps
               </div>
               {item.highlights.map((highlight, highlightIndex) => (
                 <div className="bullet-editor" key={`${item.id}-highlight-${highlightIndex}`}>
-                  <span className="bullet-editor__marker" aria-hidden="true">—</span>
+                  <span className="bullet-editor__marker" aria-hidden="true">•</span>
                   <label className="sr-only" htmlFor={`${item.id}-highlight-${highlightIndex}`}>Highlight {highlightIndex + 1}</label>
                   <textarea
                     id={`${item.id}-highlight-${highlightIndex}`}
-                    className="field__input field__textarea field__textarea--compact"
+                    className="field__input field__textarea field__textarea--highlight"
+                    ref={fitHighlightTextarea}
                     value={highlight}
                     rows={2}
                     placeholder="Describe an outcome, contribution, or responsibility."
-                    onChange={(event) => updateHighlight(item.id, highlightIndex, event.target.value)}
+                    onChange={(event) => {
+                      updateHighlight(item.id, highlightIndex, event.target.value)
+                      fitHighlightTextarea(event.currentTarget)
+                    }}
                   />
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    aria-label={`Delete highlight ${highlightIndex + 1}`}
-                    onClick={() => updateExperience(item.id, { highlights: item.highlights.filter((_, currentIndex) => currentIndex !== highlightIndex) })}
-                  >
-                    <Trash2 size={15} aria-hidden="true" />
-                  </Button>
+                  <div className="bullet-editor__actions" aria-label={`Controls for highlight ${highlightIndex + 1}`}>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      aria-label={`Move highlight ${highlightIndex + 1} up`}
+                      disabled={highlightIndex === 0}
+                      onClick={() => moveHighlight(item.id, highlightIndex, highlightIndex - 1)}
+                      title="Move highlight up"
+                    >
+                      <ChevronUp size={15} aria-hidden="true" />
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      aria-label={`Move highlight ${highlightIndex + 1} down`}
+                      disabled={highlightIndex === item.highlights.length - 1}
+                      onClick={() => moveHighlight(item.id, highlightIndex, highlightIndex + 1)}
+                      title="Move highlight down"
+                    >
+                      <ChevronDown size={15} aria-hidden="true" />
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      aria-label={`Delete highlight ${highlightIndex + 1}`}
+                      onClick={() => deleteHighlight(item.id, highlightIndex)}
+                      title="Delete highlight"
+                    >
+                      <Trash2 size={15} aria-hidden="true" />
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
