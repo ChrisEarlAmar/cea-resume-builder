@@ -59,7 +59,7 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
     ? defaultResumeData.summary
     : resume.summary
 
-  const skillGroups = resume.skillGroups.map((group) => {
+  const updatedSkillGroups = resume.skillGroups.map((group) => {
     const defaultGroup = defaultResumeData.skillGroups.find(({ id }) => id === group.id)
     if (!defaultGroup) return group
 
@@ -74,6 +74,10 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
         ? { ...group, skills }
         : group
   })
+  const missingDefaultSkillGroups = defaultResumeData.skillGroups
+    .filter((defaultGroup) => !updatedSkillGroups.some(({ id }) => id === defaultGroup.id))
+    .map((group) => ({ ...group, skills: [...group.skills] }))
+  const skillGroups = [...updatedSkillGroups, ...missingDefaultSkillGroups]
 
   const projectsWithLinks = resume.projects.map((project) => {
     const defaultProject = defaultResumeData.projects.find(({ id }) => id === project.id)
