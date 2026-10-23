@@ -21,9 +21,11 @@ const LEGACY_HIGHLIGHT_INDEX: Record<string, number> = {
   'Built back-office applications for CitiHardware, including accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.': 0,
   'Built accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.': 0,
   'Built and integrated REST APIs for Laravel and React applications.': 1,
-  'Maintained a customer-data survey tool used by 120+ stores, adding PDF export, real-time updates, access controls, and advanced filtering.': 2,
-  'Built a point-of-sale customer display system showing transaction line items, campaign videos, and static banners.': 3,
+  'Maintained a customer-data survey tool used by 120+ stores, adding PDF export, real-time updates, access controls, and advanced filtering.': 3,
+  'Built a point-of-sale customer display system showing transaction line items, campaign videos, and static banners.': 4,
 }
+const ELECTRON_CAPACITOR_HIGHLIGHT =
+  'Used Electron for desktop packaging and Capacitor for mobile builds of web applications.'
 const POINT_OF_SALE_HIGHLIGHT =
   'Created a customer-facing point-of-sale display that shows transaction line items alongside campaign videos and static banners.'
 const LEGACY_PROJECT_DESCRIPTIONS: Record<string, string> = {
@@ -45,14 +47,24 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
       const defaultIndex = LEGACY_HIGHLIGHT_INDEX[highlight]
       return defaultIndex === undefined ? highlight : defaultExperience.highlights[defaultIndex]
     })
+    const apiHighlightIndex = highlights.indexOf(defaultExperience.highlights[1])
+    const highlightsWithDesktopMobile = highlights.includes(ELECTRON_CAPACITOR_HIGHLIGHT)
+      ? highlights
+      : apiHighlightIndex === -1
+        ? [...highlights, ELECTRON_CAPACITOR_HIGHLIGHT]
+        : [
+            ...highlights.slice(0, apiHighlightIndex + 1),
+            ELECTRON_CAPACITOR_HIGHLIGHT,
+            ...highlights.slice(apiHighlightIndex + 1),
+          ]
 
     return {
       ...item,
       company: item.company === LEGACY_EMPLOYER_NAME ? defaultExperience.company : item.company,
       position: item.position === LEGACY_ROLE_TITLE ? defaultExperience.position : item.position,
-      highlights: highlights.includes(POINT_OF_SALE_HIGHLIGHT)
-        ? highlights
-        : [...highlights, POINT_OF_SALE_HIGHLIGHT],
+      highlights: highlightsWithDesktopMobile.includes(POINT_OF_SALE_HIGHLIGHT)
+        ? highlightsWithDesktopMobile
+        : [...highlightsWithDesktopMobile, POINT_OF_SALE_HIGHLIGHT],
     }
   })
   const summary = LEGACY_PROFILE_SUMMARIES.includes(resume.summary)

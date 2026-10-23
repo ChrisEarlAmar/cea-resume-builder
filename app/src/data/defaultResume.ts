@@ -25,6 +25,7 @@ export const defaultResumeData: ResumeData = {
       highlights: [
         'Developed accounting exception reports for CitiHardware that query Oracle ERP data with SQL for audit and compliance reviews.',
         'Integrated REST APIs between Laravel back ends and React applications.',
+        'Used Electron for desktop packaging and Capacitor for mobile builds of web applications.',
         "Built the customer experience management system for CitiHardware's 140 stores and continue to add features as the company adds locations, including PDF exports, live updates, access controls, and filtering.",
         'Created a customer-facing point-of-sale display that shows transaction line items alongside campaign videos and static banners.',
       ],
@@ -51,6 +52,11 @@ export const defaultResumeData: ResumeData = {
       id: 'skills-frameworks-ui',
       name: 'Frameworks & UI',
       skills: ['React', 'Next.js', 'Laravel', 'Tailwind CSS', 'Bootstrap', 'Material UI', 'shadcn/ui'],
+    },
+    {
+      id: 'skills-desktop-mobile',
+      name: 'Desktop & Mobile',
+      skills: ['Electron', 'Capacitor'],
     },
     {
       id: 'skills-data-tools',
