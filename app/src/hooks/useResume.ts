@@ -11,6 +11,7 @@ export interface ResumeActions {
 
 const LEGACY_EMPLOYER_NAME = 'DecoArts Marketing, Inc. / CitiHardware Inc.'
 const LEGACY_ROLE_TITLE = 'Full-Stack Web Developer'
+const LEGACY_PHONE_NUMBER = '0977 049 4633'
 const LEGACY_PROFILE_SUMMARIES = [
   'Full-stack web developer building back-office applications with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
   'Full-stack web developer building back-office applications for CitiHardware with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
@@ -99,6 +100,9 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
       title: resume.personal.title === LEGACY_ROLE_TITLE
         ? defaultResumeData.personal.title
         : resume.personal.title,
+      phone: resume.personal.phone === LEGACY_PHONE_NUMBER
+        ? defaultResumeData.personal.phone
+        : resume.personal.phone,
       website: resume.personal.website.trim() || defaultResumeData.personal.website,
     },
     experience,

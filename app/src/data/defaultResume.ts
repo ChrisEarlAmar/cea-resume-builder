@@ -5,7 +5,7 @@ export const defaultResumeData: ResumeData = {
     name: 'Chris Earl Amar',
     title: 'Systems Developer',
     email: 'chrisearlamar@gmail.com',
-    phone: '0977 049 4633',
+    phone: '+639770494633',
     location: 'Davao City, Philippines',
     linkedin: 'linkedin.com/in/chris-earl-amar-945a7a226',
     github: 'github.com/ChrisEarlAmar',
