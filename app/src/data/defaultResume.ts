@@ -12,7 +12,7 @@ export const defaultResumeData: ResumeData = {
     website: 'https://chrisearlamar.github.io/ChrisEarlAmar/',
   },
   summary:
-    'Systems developer building back-office applications for CitiHardware with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
+    "Systems Developer at DecoArts Marketing, Inc., building Laravel and React back-office applications for CitiHardware. Work includes REST APIs, accounting exception reports against Oracle ERP data, and a customer experience management system I built for CitiHardware's 140 stores and continue to develop as the company adds locations.",
   experience: [
     {
       id: 'experience-decoarts-citihardware',
@@ -23,10 +23,10 @@ export const defaultResumeData: ResumeData = {
       endDate: '',
       current: true,
       highlights: [
-        'Built back-office applications for CitiHardware, including accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.',
-        'Built and integrated REST APIs for Laravel and React applications.',
-        'Maintained a customer-data survey tool used by 120+ stores, adding PDF export, real-time updates, access controls, and advanced filtering.',
-        'Built a point-of-sale customer display system showing transaction line items, campaign videos, and static banners.',
+        'Developed accounting exception reports for CitiHardware that query Oracle ERP data with SQL for audit and compliance reviews.',
+        'Integrated REST APIs between Laravel back ends and React applications.',
+        "Built the customer experience management system for CitiHardware's 140 stores and continue to add features as the company adds locations, including PDF exports, live updates, access controls, and filtering.",
+        'Created a customer-facing point-of-sale display that shows transaction line items alongside campaign videos and static banners.',
       ],
     },
   ],
@@ -63,7 +63,7 @@ export const defaultResumeData: ResumeData = {
       id: 'project-batch-manager',
       name: 'Batch Manager',
       description:
-        'Windows utility, packaged as an executable, for running and managing batch scripts for PHP Artisan commands, queues, and WebSocket servers.',
+        'Windows utility packaged as an executable to run batch scripts for PHP Artisan commands, queues, and WebSocket servers.',
       technologies: ['Python', 'PHP Artisan', 'WebSockets'],
       link: 'https://github.com/ChrisEarlAmar/cea-batch-manager',
     },
@@ -71,7 +71,7 @@ export const defaultResumeData: ResumeData = {
       id: 'project-mvp-survey-tool',
       name: 'MVP Survey Tool',
       description:
-        'MVP survey platform for branch and store data collection, with WebSocket updates for real-time monitoring.',
+        'Survey-system prototype for branch and store data collection, built as an early version of the company’s customer experience management system. Includes WebSocket updates for live monitoring.',
       technologies: ['Laravel', 'React', 'WebSockets', 'Material UI'],
       link: 'https://github.com/ChrisEarlAmar/cea-mvp-survey',
     },
@@ -79,7 +79,7 @@ export const defaultResumeData: ResumeData = {
       id: 'project-quizey',
       name: 'Quizey',
       description:
-        'Quiz web app where people create and share quizzes without accounts; it stores data in IndexedDB and uses a custom .qzy file format for sharing.',
+        'Quiz app that lets people create and share quizzes without signing in. It stores quiz data in IndexedDB and uses custom .qzy files for sharing.',
       technologies: ['React', 'Vite', 'Tailwind CSS', 'shadcn/ui', 'Dexie.js'],
       link: 'https://chrisearlamar.github.io/Quizey/',
     },

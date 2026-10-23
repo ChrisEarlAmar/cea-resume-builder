@@ -11,14 +11,25 @@ export interface ResumeActions {
 
 const LEGACY_EMPLOYER_NAME = 'DecoArts Marketing, Inc. / CitiHardware Inc.'
 const LEGACY_ROLE_TITLE = 'Full-Stack Web Developer'
-const LEGACY_PROFILE_SUMMARY =
-  'Full-stack web developer building back-office applications with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.'
-const LEGACY_CITIHARDWARE_PROFILE_SUMMARY =
-  'Full-stack web developer building back-office applications for CitiHardware with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.'
-const LEGACY_ACCOUNTING_HIGHLIGHT =
-  'Built accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.'
+const LEGACY_PROFILE_SUMMARIES = [
+  'Full-stack web developer building back-office applications with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
+  'Full-stack web developer building back-office applications for CitiHardware with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
+  'Systems developer building back-office applications for CitiHardware with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
+]
+const LEGACY_HIGHLIGHT_INDEX: Record<string, number> = {
+  'Built back-office applications for CitiHardware, including accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.': 0,
+  'Built accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.': 0,
+  'Built and integrated REST APIs for Laravel and React applications.': 1,
+  'Maintained a customer-data survey tool used by 120+ stores, adding PDF export, real-time updates, access controls, and advanced filtering.': 2,
+  'Built a point-of-sale customer display system showing transaction line items, campaign videos, and static banners.': 3,
+}
 const POINT_OF_SALE_HIGHLIGHT =
-  'Built a point-of-sale customer display system showing transaction line items, campaign videos, and static banners.'
+  'Created a customer-facing point-of-sale display that shows transaction line items alongside campaign videos and static banners.'
+const LEGACY_PROJECT_DESCRIPTIONS: Record<string, string> = {
+  'project-batch-manager': 'Windows utility, packaged as an executable, for running and managing batch scripts for PHP Artisan commands, queues, and WebSocket servers.',
+  'project-mvp-survey-tool': 'MVP survey platform for branch and store data collection, with WebSocket updates for real-time monitoring.',
+  'project-quizey': 'Quiz web app where people create and share quizzes without accounts; it stores data in IndexedDB and uses a custom .qzy file format for sharing.',
+}
 
 const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
   if (resume.personal.email !== defaultResumeData.personal.email) {
@@ -29,11 +40,10 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
     const defaultExperience = defaultResumeData.experience.find(({ id }) => id === item.id)
     if (!defaultExperience) return item
 
-    const highlights = item.highlights.map((highlight) =>
-      highlight === LEGACY_ACCOUNTING_HIGHLIGHT
-        ? defaultExperience.highlights[0]
-        : highlight,
-    )
+    const highlights = item.highlights.map((highlight) => {
+      const defaultIndex = LEGACY_HIGHLIGHT_INDEX[highlight]
+      return defaultIndex === undefined ? highlight : defaultExperience.highlights[defaultIndex]
+    })
 
     return {
       ...item,
@@ -44,7 +54,7 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
         : [...highlights, POINT_OF_SALE_HIGHLIGHT],
     }
   })
-  const summary = [LEGACY_PROFILE_SUMMARY, LEGACY_CITIHARDWARE_PROFILE_SUMMARY].includes(resume.summary)
+  const summary = LEGACY_PROFILE_SUMMARIES.includes(resume.summary)
     ? defaultResumeData.summary
     : resume.summary
 
@@ -66,9 +76,15 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
 
   const projectsWithLinks = resume.projects.map((project) => {
     const defaultProject = defaultResumeData.projects.find(({ id }) => id === project.id)
-    return defaultProject && !project.link.trim()
-      ? { ...project, link: defaultProject.link }
-      : project
+    if (!defaultProject) return project
+
+    return {
+      ...project,
+      description: project.description === LEGACY_PROJECT_DESCRIPTIONS[project.id]
+        ? defaultProject.description
+        : project.description,
+      link: project.link.trim() ? project.link : defaultProject.link,
+    }
   })
   const quizeyProject = defaultResumeData.projects.find(({ id }) => id === 'project-quizey')
   const projects = quizeyProject && !projectsWithLinks.some(({ id }) => id === quizeyProject.id)
