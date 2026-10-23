@@ -60,7 +60,7 @@ export const defaultResumeData: ResumeData = {
     {
       id: 'skills-ai-agents-tools',
       name: 'AI Agents & Tools',
-      skills: ['OpenAI Codex', 'Claude', 'DeepSeek', 'Kimi'],
+      skills: ['OpenAI Codex', 'Claude Code', 'DeepSeek', 'Kimi'],
     },
   ],
   projects: [

@@ -63,9 +63,11 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
     const defaultGroup = defaultResumeData.skillGroups.find(({ id }) => id === group.id)
     if (!defaultGroup) return group
 
-    const skills = group.skills.map((skill) =>
-      skill === 'Docker (Beginner)' ? 'Docker' : skill,
-    )
+    const skills = group.skills.map((skill) => {
+      if (skill === 'Docker (Beginner)') return 'Docker'
+      if (group.id === 'skills-ai-agents-tools' && skill === 'Claude') return 'Claude Code'
+      return skill
+    })
     const missingSkills = defaultGroup.skills.filter((skill) => !skills.includes(skill))
 
     return missingSkills.length > 0
