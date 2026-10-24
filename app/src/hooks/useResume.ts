@@ -16,22 +16,42 @@ const LEGACY_PROFILE_SUMMARIES = [
   'Full-stack web developer building back-office applications with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
   'Full-stack web developer building back-office applications for CitiHardware with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
   'Systems developer building back-office applications for CitiHardware with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
+  "Systems Developer at DecoArts Marketing, Inc., building Laravel and React back-office applications for CitiHardware. Work includes REST APIs, accounting exception reports against Oracle ERP data, and a customer experience management system I built for CitiHardware's 140 stores and continue to develop as the company adds locations.",
+  'Systems Developer at DecoArts Marketing, Inc., building Laravel and React back-office systems for CitiHardware, including REST APIs, Oracle ERP reports, and a customer experience platform for 140 stores.',
 ]
 const LEGACY_HIGHLIGHT_INDEX: Record<string, number> = {
   'Built back-office applications for CitiHardware, including accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.': 0,
   'Built accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.': 0,
+  'Developed accounting exception reports for CitiHardware that query Oracle ERP data with SQL for audit and compliance reviews.': 0,
+  'Built SQL-backed accounting exception reports from Oracle ERP data for audit and compliance work.': 0,
   'Built and integrated REST APIs for Laravel and React applications.': 1,
   'Maintained a customer-data survey tool used by 120+ stores, adding PDF export, real-time updates, access controls, and advanced filtering.': 3,
   'Built a point-of-sale customer display system showing transaction line items, campaign videos, and static banners.': 4,
+  'Used Electron for desktop packaging and Capacitor for mobile builds of web applications.': 2,
+  "Built the customer experience management system for CitiHardware's 140 stores and continue to add features as the company adds locations, including PDF exports, live updates, access controls, and filtering.": 3,
+  "Built and continue to extend CitiHardware's 140-store customer experience platform, with live updates, access controls, filtering, and PDF export.": 3,
+  'Created a customer-facing point-of-sale display that shows transaction line items alongside campaign videos and static banners.': 4,
 }
 const ELECTRON_CAPACITOR_HIGHLIGHT =
-  'Used Electron for desktop packaging and Capacitor for mobile builds of web applications.'
+  'Packaged web applications for desktop with Electron and mobile with Capacitor.'
 const POINT_OF_SALE_HIGHLIGHT =
-  'Created a customer-facing point-of-sale display that shows transaction line items alongside campaign videos and static banners.'
-const LEGACY_PROJECT_DESCRIPTIONS: Record<string, string> = {
-  'project-batch-manager': 'Windows utility, packaged as an executable, for running and managing batch scripts for PHP Artisan commands, queues, and WebSocket servers.',
-  'project-mvp-survey-tool': 'MVP survey platform for branch and store data collection, with WebSocket updates for real-time monitoring.',
-  'project-quizey': 'Quiz web app where people create and share quizzes without accounts; it stores data in IndexedDB and uses a custom .qzy file format for sharing.',
+  'Built a point-of-sale display for transaction items, campaign videos, and static banners.'
+const LEGACY_PROJECT_DESCRIPTIONS: Record<string, string[]> = {
+  'project-batch-manager': [
+    'Windows utility, packaged as an executable, for running and managing batch scripts for PHP Artisan commands, queues, and WebSocket servers.',
+    'Windows utility packaged as an executable to run batch scripts for PHP Artisan commands, queues, and WebSocket servers.',
+    'Windows desktop utility for PHP Artisan commands, queues, and WebSocket servers.',
+  ],
+  'project-mvp-survey-tool': [
+    'MVP survey platform for branch and store data collection, with WebSocket updates for real-time monitoring.',
+    'Survey-system prototype for branch and store data collection, built as an early version of the company’s customer experience management system. Includes WebSocket updates for live monitoring.',
+    "Early survey-system version of the company's customer experience platform for branch and store data collection.",
+  ],
+  'project-quizey': [
+    'Quiz web app where people create and share quizzes without accounts; it stores data in IndexedDB and uses a custom .qzy file format for sharing.',
+    'Quiz app that lets people create and share quizzes without signing in. It stores quiz data in IndexedDB and uses custom .qzy files for sharing.',
+    'No-sign-in quiz app with IndexedDB storage and a custom .qzy sharing format.',
+  ],
 }
 
 const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
@@ -99,7 +119,7 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
 
     return {
       ...project,
-      description: project.description === LEGACY_PROJECT_DESCRIPTIONS[project.id]
+      description: LEGACY_PROJECT_DESCRIPTIONS[project.id]?.includes(project.description)
         ? defaultProject.description
         : project.description,
       link: project.link.trim() ? project.link : defaultProject.link,
