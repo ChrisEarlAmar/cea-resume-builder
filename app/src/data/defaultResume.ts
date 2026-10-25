@@ -90,8 +90,8 @@ export const defaultResumeData: ResumeData = {
       id: 'project-quizey',
       name: 'Quizey',
       description:
-        'No-sign-in quiz app with IndexedDB and a custom .qzy sharing format.',
-      technologies: ['React', 'Vite', 'Tailwind CSS', 'shadcn/ui', 'Dexie.js'],
+        'No-sign-in quiz app with IndexedDB, custom .qzy sharing, and Android APK builds using Capacitor and Android Studio.',
+      technologies: ['React', 'Vite', 'Tailwind CSS', 'shadcn/ui', 'Dexie.js', 'Capacitor', 'Android Studio'],
       link: 'https://chrisearlamar.github.io/Quizey/',
     },
   ],

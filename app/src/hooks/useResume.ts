@@ -51,6 +51,7 @@ const LEGACY_PROJECT_DESCRIPTIONS: Record<string, string[]> = {
     'Quiz web app where people create and share quizzes without accounts; it stores data in IndexedDB and uses a custom .qzy file format for sharing.',
     'Quiz app that lets people create and share quizzes without signing in. It stores quiz data in IndexedDB and uses custom .qzy files for sharing.',
     'No-sign-in quiz app with IndexedDB storage and a custom .qzy sharing format.',
+    'No-sign-in quiz app with IndexedDB and a custom .qzy sharing format.',
   ],
 }
 
@@ -116,12 +117,17 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
   const projectsWithLinks = resume.projects.map((project) => {
     const defaultProject = defaultResumeData.projects.find(({ id }) => id === project.id)
     if (!defaultProject) return project
+    const isLegacyDescription = LEGACY_PROJECT_DESCRIPTIONS[project.id]?.includes(project.description)
+    const technologies = isLegacyDescription
+      ? [...project.technologies, ...defaultProject.technologies.filter((technology) => !project.technologies.includes(technology))]
+      : project.technologies
 
     return {
       ...project,
-      description: LEGACY_PROJECT_DESCRIPTIONS[project.id]?.includes(project.description)
+      description: isLegacyDescription
         ? defaultProject.description
         : project.description,
+      technologies,
       link: project.link.trim() ? project.link : defaultProject.link,
     }
   })
