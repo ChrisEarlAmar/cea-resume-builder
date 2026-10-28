@@ -109,12 +109,8 @@ const AtsProjects = ({ items }: { items: Project[] }) => {
         const technologies = project.technologies.filter((technology) => technology.trim())
         return (
           <article className="resume-ats__entry" key={project.id}>
-            {project.name ? (
-              <h3>
-                {project.name}
-                {project.link.trim() ? <> | <AtsLink value={project.link} /></> : null}
-              </h3>
-            ) : null}
+            {project.name ? <h3>{project.name}</h3> : null}
+            {project.link.trim() ? <p className="resume-ats__project-link"><AtsLink value={project.link} /></p> : null}
             {project.description ? <p>{project.description}</p> : null}
             {technologies.length > 0 ? <p><strong>Technologies: </strong>{technologies.join(', ')}</p> : null}
           </article>
