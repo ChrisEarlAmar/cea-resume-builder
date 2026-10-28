@@ -2,14 +2,7 @@ import { pdf } from '@react-pdf/renderer'
 import { PDFResumeDocument } from '../components/pdf/PDFResumeDocument'
 import type { ResumeData } from '../types/resume'
 
-const filenameFor = (name: string): string => {
-  const normalized = name
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-  return `${normalized || 'resume'}-ats-resume.pdf`
-}
+const PDF_FILENAME = 'Chris Earl Amar - Resume.pdf'
 
 /** Creates an A4 PDF with embedded text and vector layout - never a page screenshot. */
 export const downloadResumePdf = async (data: ResumeData): Promise<void> => {
@@ -17,7 +10,7 @@ export const downloadResumePdf = async (data: ResumeData): Promise<void> => {
   const url = URL.createObjectURL(blob)
   const anchor = document.createElement('a')
   anchor.href = url
-  anchor.download = filenameFor(data.personal.name)
+  anchor.download = PDF_FILENAME
   document.body.appendChild(anchor)
   anchor.click()
   anchor.remove()
