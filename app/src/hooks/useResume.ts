@@ -18,6 +18,7 @@ const LEGACY_PROFILE_SUMMARIES = [
   'Systems developer building back-office applications for CitiHardware with Laravel, React, TypeScript, SQL, and Oracle ERP data. Builds REST APIs and accounting exception reports, and maintains a customer-data survey tool used by 120+ stores with real-time updates, access controls, filtering, and PDF export.',
   "Systems Developer at DecoArts Marketing, Inc., building Laravel and React back-office applications for CitiHardware. Work includes REST APIs, accounting exception reports against Oracle ERP data, and a customer experience management system I built for CitiHardware's 140 stores and continue to develop as the company adds locations.",
   'Systems Developer at DecoArts Marketing, Inc., building Laravel and React back-office systems for CitiHardware, including REST APIs, Oracle ERP reports, and a customer experience platform for 140 stores.',
+  'Systems Developer at DecoArts Marketing, Inc., building Laravel and React systems for CitiHardware: REST APIs, Oracle ERP reports, and a customer experience platform for 140 stores.',
 ]
 const LEGACY_HIGHLIGHT_INDEX: Record<string, number> = {
   'Built back-office applications for CitiHardware, including accounting exception-report generators that query Oracle ERP data with optimized SQL for audit and compliance work.': 0,

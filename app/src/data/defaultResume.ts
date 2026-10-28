@@ -12,7 +12,7 @@ export const defaultResumeData: ResumeData = {
     website: 'https://chrisearlamar.github.io/ChrisEarlAmar/',
   },
   summary:
-    'Systems Developer at DecoArts Marketing, Inc., building Laravel and React systems for CitiHardware: REST APIs, Oracle ERP reports, and a customer experience platform for 140 stores.',
+    'Systems Developer at DecoArts Marketing, Inc. with nearly three years building Laravel and React tools for CitiHardware. My work includes REST APIs, Oracle ERP reports, and a customer experience platform used across 140 stores.',
   experience: [
     {
       id: 'experience-decoarts-citihardware',
