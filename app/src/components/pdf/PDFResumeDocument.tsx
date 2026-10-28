@@ -415,6 +415,94 @@ const styles = StyleSheet.create({
     fontSize: 8,
     lineHeight: 1.38,
   },
+  atsPage: {
+    paddingTop: mm(15),
+    paddingRight: mm(16),
+    paddingBottom: mm(13),
+    paddingLeft: mm(16),
+    fontSize: 9.7,
+    lineHeight: 1.4,
+  },
+  atsHeader: {
+    paddingBottom: mm(4),
+    borderBottomWidth: 1,
+    borderBottomColor: '#111111',
+  },
+  atsName: {
+    marginBottom: mm(1.6),
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 23,
+    lineHeight: 1,
+  },
+  atsTitle: {
+    marginBottom: mm(1.8),
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 11,
+    lineHeight: 1.25,
+  },
+  atsContact: {
+    marginBottom: mm(1),
+    fontSize: 9.2,
+    lineHeight: 1.35,
+  },
+  atsLink: {
+    marginBottom: mm(0.9),
+    fontSize: 8.8,
+    lineHeight: 1.35,
+    textDecoration: 'underline',
+  },
+  atsSection: {
+    marginTop: mm(4.2),
+  },
+  atsSectionTitle: {
+    marginBottom: mm(1.6),
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 10.2,
+    lineHeight: 1.2,
+  },
+  atsEntry: {
+    marginTop: mm(2.5),
+  },
+  atsFirstEntry: {
+    marginTop: 0,
+  },
+  atsEntryTitle: {
+    marginBottom: mm(0.8),
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 10.1,
+    lineHeight: 1.25,
+  },
+  atsMeta: {
+    marginBottom: mm(0.9),
+    color: '#333333',
+    fontSize: 9.2,
+    lineHeight: 1.35,
+  },
+  atsBody: {
+    marginBottom: mm(0.9),
+    fontSize: 9.2,
+    lineHeight: 1.38,
+  },
+  atsHighlights: {
+    marginTop: mm(1.2),
+    gap: mm(0.7),
+  },
+  atsHighlight: {
+    flexDirection: 'row',
+  },
+  atsMarker: {
+    width: mm(4),
+    fontSize: 9.2,
+    lineHeight: 1.38,
+  },
+  atsHighlightText: {
+    flex: 1,
+    fontSize: 9.2,
+    lineHeight: 1.38,
+  },
+  atsSkills: {
+    gap: mm(1.1),
+  },
 })
 
 const hasExperienceContent = (item: Experience): boolean => Boolean(
@@ -514,6 +602,157 @@ const PDFHeader = ({ data, template }: { data: ResumeData, template: ResumeTempl
     </View>
   )
 }
+
+const PDFAtsSection = ({ title, children }: { title: string, children: React.ReactNode }) => (
+  <View style={styles.atsSection}>
+    <Text style={styles.atsSectionTitle}>{title}</Text>
+    {children}
+  </View>
+)
+
+const PDFAtsHeader = ({ data }: { data: ResumeData }) => {
+  const contactDetails = [data.personal.email, data.personal.phone, data.personal.location].filter(Boolean)
+  const links = [data.personal.linkedin, data.personal.github, data.personal.website].filter(Boolean)
+
+  return (
+    <View style={styles.atsHeader}>
+      {data.personal.name ? <Text style={styles.atsName}>{data.personal.name}</Text> : null}
+      {data.personal.title ? <Text style={styles.atsTitle}>{data.personal.title}</Text> : null}
+      {contactDetails.length > 0 ? <Text style={styles.atsContact}>{contactDetails.join(' | ')}</Text> : null}
+      {links.map((value) => {
+        const url = toHttpUrl(value)
+        const label = formatUrlLabel(value)
+        return url ? <Link key={value} src={url} style={styles.atsLink}>{label}</Link> : <Text key={value} style={styles.atsLink}>{label}</Text>
+      })}
+    </View>
+  )
+}
+
+const PDFAtsExperience = ({ items }: { items: Experience[] }) => {
+  const experience = items.filter(hasExperienceContent)
+  if (experience.length === 0) return null
+
+  return (
+    <PDFAtsSection title="Experience">
+      {experience.map((item, itemIndex) => {
+        const meta = [item.company, item.location, formatDateRange(item.startDate, item.endDate, item.current)].filter(Boolean)
+        const highlights = item.highlights.filter((highlight) => highlight.trim())
+        return (
+          <View key={item.id} style={[styles.atsEntry, itemIndex === 0 ? styles.atsFirstEntry : undefined]} wrap={!keepEntryTogether([item.position, ...meta, ...highlights])}>
+            {item.position ? <Text style={styles.atsEntryTitle}>{item.position}</Text> : null}
+            {meta.length > 0 ? <Text style={styles.atsMeta}>{meta.join(' | ')}</Text> : null}
+            {highlights.length > 0 ? (
+              <View style={styles.atsHighlights}>
+                {highlights.map((highlight, index) => (
+                  <View style={styles.atsHighlight} key={`${item.id}-${index}`}>
+                    <Text style={styles.atsMarker}>-</Text>
+                    <Text style={styles.atsHighlightText}>{highlight}</Text>
+                  </View>
+                ))}
+              </View>
+            ) : null}
+          </View>
+        )
+      })}
+    </PDFAtsSection>
+  )
+}
+
+const PDFAtsEducation = ({ items }: { items: Education[] }) => {
+  const education = items.filter(hasEducationContent)
+  if (education.length === 0) return null
+
+  return (
+    <PDFAtsSection title="Education">
+      {education.map((item, itemIndex) => {
+        const degree = [item.degree, item.field].filter(Boolean).join(', ')
+        const meta = [item.institution, formatDateRange(item.startDate, item.endDate)].filter(Boolean)
+        return (
+          <View key={item.id} style={[styles.atsEntry, itemIndex === 0 ? styles.atsFirstEntry : undefined]} wrap={!keepEntryTogether([degree, ...meta, item.description])}>
+            {degree ? <Text style={styles.atsEntryTitle}>{degree}</Text> : null}
+            {meta.length > 0 ? <Text style={styles.atsMeta}>{meta.join(' | ')}</Text> : null}
+            {item.description ? <Text style={styles.atsBody}>{item.description}</Text> : null}
+          </View>
+        )
+      })}
+    </PDFAtsSection>
+  )
+}
+
+const PDFAtsSkills = ({ items }: { items: SkillGroup[] }) => {
+  const groups = items
+    .map((group) => ({ ...group, skills: group.skills.filter((skill) => skill.trim()) }))
+    .filter((group) => group.skills.length > 0)
+  if (groups.length === 0) return null
+
+  return (
+    <PDFAtsSection title="Skills">
+      <View style={styles.atsSkills}>
+        {groups.map((group) => (
+          <Text key={group.id} style={styles.atsBody}>
+            {group.name ? <Text style={styles.stackLabel}>{group.name}: </Text> : null}
+            {group.skills.join(', ')}
+          </Text>
+        ))}
+      </View>
+    </PDFAtsSection>
+  )
+}
+
+const PDFAtsProjects = ({ items }: { items: Project[] }) => {
+  const projects = items.filter(hasProjectContent)
+  if (projects.length === 0) return null
+
+  return (
+    <PDFAtsSection title="Projects">
+      {projects.map((project, itemIndex) => {
+        const link = toHttpUrl(project.link)
+        const linkLabel = formatUrlLabel(project.link)
+        const technologies = project.technologies.filter((technology) => technology.trim())
+        return (
+          <View key={project.id} style={[styles.atsEntry, itemIndex === 0 ? styles.atsFirstEntry : undefined]} wrap={!keepEntryTogether([project.name, project.description, ...technologies])}>
+            {project.name ? <Text style={styles.atsEntryTitle}>{project.name}</Text> : null}
+            {link ? <Link src={link} style={styles.atsLink}>{linkLabel}</Link> : null}
+            {project.description ? <Text style={styles.atsBody}>{project.description}</Text> : null}
+            {technologies.length > 0 ? <Text style={styles.atsBody}><Text style={styles.stackLabel}>Technologies: </Text>{technologies.join(', ')}</Text> : null}
+          </View>
+        )
+      })}
+    </PDFAtsSection>
+  )
+}
+
+const PDFAtsCertifications = ({ items }: { items: Certification[] }) => {
+  const certifications = items.filter(hasCertificationContent)
+  if (certifications.length === 0) return null
+
+  return (
+    <PDFAtsSection title="Certifications">
+      {certifications.map((item, itemIndex) => {
+        const meta = [item.issuer, item.date].filter(Boolean)
+        const url = toHttpUrl(item.url)
+        return (
+          <View key={item.id} style={[styles.atsEntry, itemIndex === 0 ? styles.atsFirstEntry : undefined]} wrap={!keepEntryTogether([item.name, ...meta, item.url])}>
+            {item.name ? <Text style={styles.atsEntryTitle}>{item.name}</Text> : null}
+            {meta.length > 0 ? <Text style={styles.atsMeta}>{meta.join(' | ')}</Text> : null}
+            {url ? <Link src={url} style={styles.atsLink}>{formatUrlLabel(item.url)}</Link> : null}
+          </View>
+        )
+      })}
+    </PDFAtsSection>
+  )
+}
+
+const PDFAtsContent = ({ data }: { data: ResumeData }) => (
+  <>
+    {data.summary.trim() ? <PDFAtsSection title="Professional Summary"><Text style={styles.atsBody}>{data.summary}</Text></PDFAtsSection> : null}
+    <PDFAtsExperience items={data.experience} />
+    <PDFAtsEducation items={data.education} />
+    <PDFAtsSkills items={data.skillGroups} />
+    <PDFAtsProjects items={data.projects} />
+    <PDFAtsCertifications items={data.certifications} />
+  </>
+)
 
 const PDFExperience = ({ items, template }: { items: Experience[], template: ResumeTemplateId }) => {
   const experience = items.filter(hasExperienceContent)
@@ -799,13 +1038,14 @@ export const PDFResumeDocument = ({ data, template = 'axis' }: PDFResumeDocument
   <Document title={`${data.personal.name || 'Resume'} - Resume`} author={data.personal.name || undefined}>
     <Page size="A4" style={[
       styles.page,
+      template === 'ats' ? styles.atsPage : undefined,
       template === 'classic' ? styles.classicPage : undefined,
       template === 'compact' ? styles.compactPage : undefined,
       template === 'sidebar' ? styles.sidebarPage : undefined,
       template === 'minimal' ? styles.minimalPage : undefined,
     ]} wrap>
-      <PDFHeader data={data} template={template} />
-      {template === 'sidebar' ? <PDFSidebarContent data={data} /> : <PDFStandardContent data={data} template={template} />}
+      {template === 'ats' ? <PDFAtsHeader data={data} /> : <PDFHeader data={data} template={template} />}
+      {template === 'ats' ? <PDFAtsContent data={data} /> : template === 'sidebar' ? <PDFSidebarContent data={data} /> : <PDFStandardContent data={data} template={template} />}
     </Page>
   </Document>
 )

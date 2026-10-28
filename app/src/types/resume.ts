@@ -1,4 +1,4 @@
-export type ResumeTemplateId = 'axis' | 'classic' | 'compact' | 'sidebar' | 'minimal'
+export type ResumeTemplateId = 'axis' | 'classic' | 'compact' | 'sidebar' | 'minimal' | 'ats'
 
 export interface PersonalDetails {
   name: string

@@ -1,4 +1,5 @@
 import type { ResumeData, ResumeTemplateId } from '../../types/resume'
+import { AtsResumeTemplate } from './AtsResumeTemplate'
 import { ResumeCertifications } from './ResumeCertifications'
 import { ResumeEducation } from './ResumeEducation'
 import { ResumeExperience } from './ResumeExperience'
@@ -80,6 +81,8 @@ const MinimalTemplate = ({ data }: { data: ResumeData }) => (
   </article>
 )
 
+const AtsTemplate = ({ data }: { data: ResumeData }) => <AtsResumeTemplate data={data} />
+
 export const ResumeTemplate = ({ data, template = 'axis' }: ResumeTemplateProps) => {
   switch (template) {
     case 'classic':
@@ -90,6 +93,8 @@ export const ResumeTemplate = ({ data, template = 'axis' }: ResumeTemplateProps)
       return <SidebarTemplate data={data} />
     case 'minimal':
       return <MinimalTemplate data={data} />
+    case 'ats':
+      return <AtsTemplate data={data} />
     case 'axis':
       return <AxisTemplate data={data} />
   }

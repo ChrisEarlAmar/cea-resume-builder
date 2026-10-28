@@ -13,6 +13,11 @@ export const resumeTemplateOptions: ResumeTemplateOption[] = [
     description: 'Editorial date rail with a balanced one-page rhythm.',
   },
   {
+    id: 'ats',
+    label: 'ATS',
+    description: 'Plain single-column text flow for application portals and resume parsers.',
+  },
+  {
     id: 'classic',
     label: 'Classic',
     description: 'A conventional single-column format for conservative applications.',
