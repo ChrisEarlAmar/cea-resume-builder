@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
     marginTop: mm(4.2),
   },
   sectionTitle: {
-    marginBottom: mm(1.6),
+    marginBottom: mm(1.8),
     fontFamily: 'Helvetica-Bold',
-    fontSize: 10.4,
-    lineHeight: 1.2,
+    fontSize: 12.2,
+    lineHeight: 1.18,
   },
   entry: {
     marginTop: mm(2.5),

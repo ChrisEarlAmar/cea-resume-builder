@@ -846,10 +846,11 @@ a {
 }
 
 .resume-ats__section h2 {
-  margin-bottom: 1.6mm;
-  font-size: 10.2pt;
+  margin-bottom: 1.8mm;
+  font-size: 12.2pt;
   font-weight: 700;
-  line-height: 1.2;
+  letter-spacing: -0.012em;
+  line-height: 1.18;
 }
 
 .resume-ats__section > p {
