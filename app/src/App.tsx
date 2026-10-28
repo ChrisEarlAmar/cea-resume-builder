@@ -1,17 +1,13 @@
-import { RotateCcw, Sparkles } from 'lucide-react'
+import { FileDown, LoaderCircle, RotateCcw, ShieldCheck, Sparkles } from 'lucide-react'
 import { useState } from 'react'
 import { EditorModeSwitch } from './components/editor/EditorModeSwitch'
 import type { EditorMode } from './components/editor/EditorModeSwitch'
 import { JsonResumeEditor } from './components/editor/JsonResumeEditor'
 import { ResumeEditor } from './components/editor/ResumeEditor'
 import { ResumeTemplate } from './components/resume/ResumeTemplate'
-import { TemplateTabs } from './components/resume/TemplateTabs'
 import { Button } from './components/ui/Button'
-import { DownloadMenu } from './components/ui/DownloadMenu'
 import { Modal } from './components/ui/Modal'
-import { getResumeTemplateOption } from './data/resumeTemplates'
 import { useResume } from './hooks/useResume'
-import type { ResumeTemplateId } from './types/resume'
 
 const App = () => {
   const { data, updateData, reset } = useResume()
@@ -19,16 +15,14 @@ const App = () => {
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false)
   const [pdfError, setPdfError] = useState<string | null>(null)
   const [editorMode, setEditorMode] = useState<EditorMode>('form')
-  const [template, setTemplate] = useState<ResumeTemplateId>('axis')
-  const activeTemplate = getResumeTemplateOption(template)
 
-  const handleDownload = async (downloadTemplate: ResumeTemplateId) => {
+  const handleDownload = async () => {
     if (isGeneratingPdf) return
     setIsGeneratingPdf(true)
     setPdfError(null)
     try {
       const { downloadResumePdf } = await import('./utils/downloadPdf')
-      await downloadResumePdf(data, downloadTemplate)
+      await downloadResumePdf(data)
     } catch {
       setPdfError('The PDF could not be created. Please try again.')
     } finally {
@@ -49,14 +43,17 @@ const App = () => {
             <span className="brand__mark" aria-hidden="true">R</span>
             <span>
               <strong>Resume Studio</strong>
-              <small>Print-ready, by design</small>
+              <small>ATS-friendly, editable on the fly</small>
             </span>
           </a>
           <div className="app-topbar__actions">
             <Button variant="ghost" size="small" onClick={() => setIsResetModalOpen(true)}>
               <RotateCcw size={15} aria-hidden="true" /> Reset
             </Button>
-            <DownloadMenu activeTemplate={template} isGenerating={isGeneratingPdf} onDownload={handleDownload} />
+            <Button variant="primary" size="small" disabled={isGeneratingPdf} onClick={handleDownload}>
+              {isGeneratingPdf ? <LoaderCircle className="spin" size={16} aria-hidden="true" /> : <FileDown size={16} aria-hidden="true" />}
+              {isGeneratingPdf ? 'Preparing PDF…' : 'Download ATS-friendly PDF'}
+            </Button>
           </div>
           {pdfError ? <p className="pdf-error" role="alert">{pdfError}</p> : null}
         </header>
@@ -65,8 +62,8 @@ const App = () => {
           <aside className="editor-pane" aria-label="Resume editor">
             <div className="editor-pane__intro">
               <p className="eyebrow"><Sparkles size={13} aria-hidden="true" /> Live editor</p>
-              <h1>Make it unmistakably yours.</h1>
-              <p>Every change is saved locally and appears in the A4 preview immediately.</p>
+              <h1>Keep the content yours. Keep the format readable.</h1>
+              <p>Every change is saved locally and appears in the fixed ATS-friendly A4 preview immediately.</p>
               <EditorModeSwitch mode={editorMode} onChange={setEditorMode} />
             </div>
             <div hidden={editorMode !== 'form'}>
@@ -80,16 +77,15 @@ const App = () => {
           <section className="preview-pane" aria-label="Live resume preview">
             <div className="preview-toolbar">
               <div className="preview-toolbar__title">
-                <p className="eyebrow">Live preview</p>
-                <h2>{activeTemplate.label} <span>— A4</span></h2>
-                <TemplateTabs value={template} onChange={setTemplate} />
+                <p className="eyebrow"><ShieldCheck size={13} aria-hidden="true" /> ATS-friendly preview</p>
+                <h2>Standard resume <span>— A4</span></h2>
               </div>
-              <p className="preview-toolbar__hint">Downloads use selectable text and vector layout.</p>
+              <p className="preview-toolbar__hint">One text-based layout, built for clear reading by people and application systems.</p>
             </div>
             <div className="preview-scroll">
               <div className="preview-stage">
-                <div className="preview-paper-holder" id="resume-preview" role="tabpanel" aria-labelledby={`template-tab-${template}`}>
-                  <ResumeTemplate data={data} template={template} />
+                <div className="preview-paper-holder" id="resume-preview">
+                  <ResumeTemplate data={data} />
                 </div>
               </div>
             </div>

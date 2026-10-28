@@ -1,5 +1,3 @@
-export type ResumeTemplateId = 'axis' | 'classic' | 'compact' | 'sidebar' | 'minimal' | 'ats'
-
 export interface PersonalDetails {
   name: string
   title: string
@@ -62,9 +60,4 @@ export interface ResumeData {
   skillGroups: SkillGroup[]
   projects: Project[]
   certifications: Certification[]
-}
-
-export interface ResumeDocument {
-  template: ResumeTemplateId
-  data: ResumeData
 }
