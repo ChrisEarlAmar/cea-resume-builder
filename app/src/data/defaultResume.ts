@@ -51,7 +51,7 @@ export const defaultResumeData: ResumeData = {
     {
       id: 'skills-frameworks-ui',
       name: 'Frameworks & UI',
-      skills: ['React', 'Next.js', 'Laravel', 'Tailwind CSS', 'Bootstrap', 'Material UI', 'shadcn/ui'],
+      skills: ['React', 'Next.js', 'Laravel', 'FastAPI', 'Tailwind CSS', 'Bootstrap', 'Material UI', 'shadcn/ui'],
     },
     {
       id: 'skills-desktop-mobile',
