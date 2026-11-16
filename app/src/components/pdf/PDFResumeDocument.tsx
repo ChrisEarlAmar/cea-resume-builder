@@ -263,7 +263,7 @@ const PDFCertifications = ({ items }: { items: Certification[] }) => {
 }
 
 export const PDFResumeDocument = ({ data }: PDFResumeDocumentProps) => (
-  <Document title={`${data.personal.name || 'Resume'} - ATS-friendly resume`} author={data.personal.name || undefined}>
+  <Document title={`${data.personal.name || 'Resume'} - Resume`} author={data.personal.name || undefined}>
     <Page size="A4" style={styles.page} wrap>
       <PDFHeader data={data} />
       {data.summary.trim() ? <PDFSection title="Professional Summary"><Text style={styles.body}>{data.summary}</Text></PDFSection> : null}
