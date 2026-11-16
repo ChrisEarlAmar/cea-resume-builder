@@ -46,7 +46,7 @@ export const defaultResumeData: ResumeData = {
     {
       id: 'skills-languages',
       name: 'Languages',
-      skills: ['TypeScript', 'JavaScript', 'PHP', 'Python', 'SQL', 'HTML/CSS'],
+      skills: ['TypeScript', 'JavaScript', 'PHP', 'Python', 'Go', 'SQL', 'HTML/CSS'],
     },
     {
       id: 'skills-frameworks-ui',
