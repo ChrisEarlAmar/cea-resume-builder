@@ -132,10 +132,10 @@ const applyProfileUpdatesToSavedResume = (resume: ResumeData): ResumeData => {
       link: project.link.trim() ? project.link : defaultProject.link,
     }
   })
-  const quizeyProject = defaultResumeData.projects.find(({ id }) => id === 'project-quizey')
-  const projects = quizeyProject && !projectsWithLinks.some(({ id }) => id === quizeyProject.id)
-    ? [...projectsWithLinks, { ...quizeyProject, technologies: [...quizeyProject.technologies] }]
-    : projectsWithLinks
+  const missingDefaultProjects = defaultResumeData.projects
+    .filter((defaultProject) => !projectsWithLinks.some(({ id }) => id === defaultProject.id))
+    .map((project) => ({ ...project, technologies: [...project.technologies] }))
+  const projects = [...projectsWithLinks, ...missingDefaultProjects]
 
   return {
     ...resume,

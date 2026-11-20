@@ -24,7 +24,7 @@ export const defaultResumeData: ResumeData = {
       current: true,
       highlights: [
         'Built Oracle ERP accounting exception reports with SQL for audit and compliance.',
-        'Integrated REST APIs between Laravel back ends and React applications.',
+        'Integrated REST APIs and Keycloak authentication for Laravel and React applications, using the Keycloak API to sync users from groups.',
         'Packaged web applications for desktop with Electron and mobile with Capacitor.',
         "Built CitiHardware's customer experience platform for 140 stores and continue to add live updates, access controls, filters, and PDF export.",
         'Built a point-of-sale display for transaction items, campaign videos, and static banners.',
@@ -60,8 +60,8 @@ export const defaultResumeData: ResumeData = {
     },
     {
       id: 'skills-data-tools',
-      name: 'Data & Tools',
-      skills: ['MySQL', 'Oracle SQL Developer', 'GitLab', 'Docker'],
+      name: 'Data, Tools & Auth',
+      skills: ['MySQL', 'Oracle SQL Developer', 'GitLab', 'Docker', 'Keycloak'],
     },
     {
       id: 'skills-ai-agents-tools',
@@ -70,6 +70,14 @@ export const defaultResumeData: ResumeData = {
     },
   ],
   projects: [
+    {
+      id: 'project-local-sentiment-api',
+      name: 'Local Sentiment API',
+      description:
+        'Self-hosted Go API that runs a quantized ONNX sentiment model locally and returns aggregate results through HTTP.',
+      technologies: ['Go', 'ONNX Runtime', 'HTTP API', 'Windows'],
+      link: 'https://github.com/ChrisEarlAmar/cea-sentiment-local-api',
+    },
     {
       id: 'project-batch-manager',
       name: 'Batch Manager',
